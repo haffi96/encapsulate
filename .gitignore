@@ -1,3 +1,4 @@
+# frontend
 node_modules/
 .expo/
 dist/
@@ -12,3 +13,10 @@ web-build/
 
 # macOS
 .DS_Store
+
+# backend
+__pycache__
+
+
+# vscode
+.vscode
