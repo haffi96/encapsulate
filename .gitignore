@@ -16,7 +16,9 @@ web-build/
 
 # backend
 __pycache__
+encap
 
 
-# vscode
+# ide
 .vscode
+.idea
