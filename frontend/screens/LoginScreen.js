@@ -83,9 +83,3 @@ const styles = StyleSheet.create({
 
     },
 });
-
-{/* <Button
-title='Login'
-color="#3F4145"
-onPress={async () => setDataThing(await loginPost(email, password))}
-/> */}
