@@ -1,13 +1,42 @@
-import { useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { login } from '../requests/login';
-import { AuthContext } from '../context/AuthContext';
-import Spinner from 'react-native-loading-spinner-overlay';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { auth } from '../firebase';
+import { autoAddDoc } from '../services/collections';
 
-const LoginScreen = () => {
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
-    const { isLoading, register } = useContext(AuthContext);
+
+const LoginScreen = ({ navigation }) => {
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, user => {
+            if (user) {
+                navigation.navigate('Home')
+            }
+        })
+        return unsubscribe
+    }, [])
+
+
+    const handleSignUp = () => {
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log('Registered with:', user.email);
+                autoAddDoc(user.uid);
+            })
+            .catch(error => alert(error.message))
+    }
+
+    const handleSignIn = () => {
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                console.log('Logged in with:', user.email)
+            })
+            .catch(error => alert(error.message))
+    }
 
     return (
         <KeyboardAvoidingView
@@ -15,7 +44,6 @@ const LoginScreen = () => {
             behavior="padding"
         >
             <View style={styles.inputContainer}>
-                <Spinner visible={isLoading} />
                 <TextInput
                     placeholder='Email'
                     value={email}
@@ -32,13 +60,13 @@ const LoginScreen = () => {
             </View>
             <View style={styles.buttonContainer}>
                 <TouchableOpacity
-                    onPress={async () => await login(email, password)}
+                    onPress={handleSignIn}
                     style={styles.button}
                 >
                     <Text>Login</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={async () => await register(email, password)}
+                    onPress={handleSignUp}
                     style={styles.button}
                 >
                     <Text>Register</Text>

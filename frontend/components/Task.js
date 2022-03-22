@@ -26,6 +26,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         marginBottom: 20,
+        shadowColor: '#282A36',
+        shadowOffset: { width: 2, height: 3 },
+        shadowOpacity: 0.8,
+        shadowRadius: 1,
     },
     itemsLeft: {
         flexDirection: 'row',
