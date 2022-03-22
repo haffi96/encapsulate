@@ -6,8 +6,8 @@ import { autoAddDoc } from '../services/collections';
 
 
 const LoginScreen = ({ navigation }) => {
-    const [email, setEmail] = useState(null);
-    const [password, setPassword] = useState(null);
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
