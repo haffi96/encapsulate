@@ -121,7 +121,6 @@ function TodoScreen() {
                 <Task
                   text={taskItem.content}
                   status={taskItem.completed}
-                  userId={auth.currentUser.uid}
                   deleteAction={() => deleteTask(taskItem.id, index)}
                 />
               </TouchableOpacity>
