@@ -10,6 +10,8 @@ import {
   retrieveTodosForUser, AddTodoForUser, DeleteTodoForUser, UpdateTodoForUser,
 } from '../services/collections';
 
+// TODO: if not logged in then send to login screen
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
