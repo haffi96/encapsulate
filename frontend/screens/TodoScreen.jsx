@@ -10,6 +10,8 @@ import {
   retrieveTodosForUser, AddTodoForUser, DeleteTodoForUser, UpdateTodoForUser,
 } from '../services/collections';
 
+// TODO: if not logged in then send to login screen
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -80,6 +82,12 @@ function TodoScreen() {
     Keyboard.dismiss();
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleAddTask();
+    }
+  };
+
   const completeTask = async (docID, index) => {
     await UpdateTodoForUser(auth.currentUser.uid, docID, {
       completed: !taskItems[index].completed,
@@ -122,7 +130,7 @@ function TodoScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.writeTaskWrapper}
       >
-        <TextInput style={styles.input} placeholder="Write a task" value={todo} onChangeText={(text) => setTask(text)} />
+        <TextInput style={styles.input} placeholder="Write a task" value={todo} onChangeText={(text) => setTask(text)} onKeyPress={(e) => handleKeyPress(e)} />
         <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addWrapper}>
             <Text style={styles.addText}>+</Text>

@@ -41,8 +41,8 @@ const styles = StyleSheet.create({
 });
 
 function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -72,6 +72,12 @@ function LoginScreen({ navigation }) {
       .catch((error) => alert(error.message));
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSignIn();
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -90,6 +96,7 @@ function LoginScreen({ navigation }) {
           onChangeText={setPassword}
           style={styles.input}
           secureTextEntry
+          onKeyPress={(e) => handleKeyPress(e)}
         />
       </View>
       <View style={styles.buttonContainer}>

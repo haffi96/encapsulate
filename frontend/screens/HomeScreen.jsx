@@ -33,6 +33,7 @@ function HomeScreen({ navigation }) {
       .then(() => {
         navigation.replace('Login');
       })
+      // eslint-disable-next-line no-alert
       .catch((error) => alert(error.message));
   };
 
