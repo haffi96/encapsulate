@@ -2,6 +2,7 @@
 import {
   Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View,
   StyleSheet,
+  ScrollView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Task from '../components/Task';
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#383A59',
   },
   tasksWrapper: {
+    flex: 1,
     paddingTop: 80,
     paddingHorizontal: 20,
   },
@@ -27,10 +29,12 @@ const styles = StyleSheet.create({
   },
   items: {
     marginTop: 30,
+    marginBottom: 75,
   },
   writeTaskWrapper: {
     position: 'absolute',
-    bottom: 60,
+    padding: 10,
+    bottom: 0,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
@@ -110,7 +114,7 @@ function TodoScreen() {
     <View style={styles.container}>
       <View style={styles.tasksWrapper}>
         <Text style={styles.sectionTitle}>Today's tasks</Text>
-        <View style={styles.items}>
+        <ScrollView style={styles.items}>
           {
             taskItems.map((taskItem, index) => (
               <TouchableOpacity key={taskItem.id} onPress={() => completeTask(taskItem.id, index)}>
@@ -123,7 +127,7 @@ function TodoScreen() {
               </TouchableOpacity>
             ))
           }
-        </View>
+        </ScrollView>
       </View>
 
       <KeyboardAvoidingView
