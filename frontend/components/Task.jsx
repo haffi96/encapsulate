@@ -44,15 +44,21 @@ const styles = StyleSheet.create({
   x: {
     padding: 8,
   },
+  lineThroughItemText: {
+    maxWidth: '80%',
+    textDecorationLine: 'line-through',
+    textDecorationStyle: 'solid',
+  },
 });
 
 function Task(props) {
   const { status, text, deleteAction } = props;
+
   return (
     <View style={styles.item}>
       <View style={styles.itemsLeft}>
         <View style={status ? styles.squareComplete : styles.square} />
-        <Text style={styles.itemText}>{text}</Text>
+        <Text style={status ? styles.lineThroughItemText : styles.itemText}>{text}</Text>
       </View>
       <TouchableOpacity>
         <Text style={styles.x} onPress={deleteAction}>X</Text>
