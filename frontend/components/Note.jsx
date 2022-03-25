@@ -2,6 +2,7 @@ import {
   StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
 import React from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   item: {
@@ -28,8 +29,8 @@ function Note(props) {
   return (
     <View style={styles.item}>
       <Text style={styles.itemTitle}>{title}</Text>
-      <TouchableOpacity>
-        <Text onPress={deleteAction}>X</Text>
+      <TouchableOpacity onPress={deleteAction}>
+        <MaterialCommunityIcons name="delete" />
       </TouchableOpacity>
     </View>
   );

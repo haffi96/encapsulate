@@ -2,6 +2,7 @@ import {
   StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
 import React from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const styles = StyleSheet.create({
   item: {
@@ -60,8 +61,8 @@ function Task(props) {
         <View style={status ? styles.squareComplete : styles.square} />
         <Text style={status ? styles.lineThroughItemText : styles.itemText}>{text}</Text>
       </View>
-      <TouchableOpacity>
-        <Text style={styles.x} onPress={deleteAction}>X</Text>
+      <TouchableOpacity onPress={deleteAction}>
+        <MaterialCommunityIcons name="delete" />
       </TouchableOpacity>
     </View>
   );
