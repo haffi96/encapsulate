@@ -41,6 +41,9 @@ const styles = StyleSheet.create({
   itemText: {
     maxWidth: '80%',
   },
+  x: {
+    padding: 8,
+  },
 });
 
 function Task(props) {
@@ -52,7 +55,7 @@ function Task(props) {
         <Text style={styles.itemText}>{text}</Text>
       </View>
       <TouchableOpacity>
-        <Text onPress={deleteAction}>X</Text>
+        <Text style={styles.x} onPress={deleteAction}>X</Text>
       </TouchableOpacity>
     </View>
   );
