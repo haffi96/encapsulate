@@ -1,5 +1,5 @@
 import {
-  collection, addDoc, getDocs, collectionGroup, updateDoc, deleteDoc, setDoc, doc,
+  collection, addDoc, getDocs, collectionGroup, updateDoc, deleteDoc, doc,
 } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -22,15 +22,9 @@ const todoInitData = {
   completed: false,
 };
 
-const userInitDate = {
-  date: Date.now(),
-};
-
 // Create
 export const autoAddDoc = async (userID) => {
   try {
-    const newUserDoc = await setDoc(doc(db, 'users', userID), userInitDate);
-    console.log(newUserDoc);
     const todoDoc = await addDoc(collection(db, 'users', userID, 'todos'), todoInitData);
     const gymLogDoc = await addDoc(collection(db, 'users', userID, 'gym_log'), gymLogInitData);
     const notesDoc = await addDoc(collection(db, 'users', userID, 'notes'), notesInitData);
@@ -91,8 +85,29 @@ export const DeleteTodoForUser = async (userID, docID) => {
 /// Notes
 export const retrieveNotesForUser = async (userID) => {
   const collectionRef = collection(db, 'users', userID, 'notes');
-  const data = await getDocs(collectionRef);
-  console.log(data);
+  const allNotesSnapshot = await getDocs(collectionRef);
+  const data = allNotesSnapshot.docs.map((noteDoc) => {
+    const dataItem = noteDoc.data();
+    dataItem.id = noteDoc.id;
+    return dataItem;
+  });
+  return data;
+};
+
+export const AddNoteForUser = async (userID, dataToAdd) => {
+  const newDocRef = collection(db, 'users', userID, 'notes');
+  const data = await addDoc(newDocRef, dataToAdd);
+  return data.id;
+};
+
+export const UpdateNoteForUser = async (userID, docID, updateData) => {
+  const docRef = doc(db, 'users', userID, 'notes', docID);
+  await updateDoc(docRef, updateData);
+};
+
+export const DeleteNoteForUser = async (userID, docID) => {
+  const docRef = doc(db, 'users', userID, 'notes', docID);
+  await deleteDoc(docRef);
 };
 
 /// GymLog
