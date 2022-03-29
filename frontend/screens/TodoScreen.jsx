@@ -5,6 +5,7 @@ import {
   ScrollView,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Task from '../components/Task';
 import { auth } from '../firebase';
 import {
@@ -51,14 +52,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   addWrapper: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     backgroundColor: '#FFF',
     borderRadius: 60,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#C0C0C0',
     borderWidth: 1,
+    marginBottom: 2.5,
   },
   addText: {
   },
@@ -136,7 +138,7 @@ function TodoScreen() {
         <TextInput style={styles.input} placeholder="Write a task" value={todo} onChangeText={(text) => setTask(text)} onKeyPress={(e) => handleKeyPress(e)} />
         <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addWrapper}>
-            <Text style={styles.addText}>+</Text>
+            <MaterialCommunityIcons name="plus" size={25} />
           </View>
         </TouchableOpacity>
       </KeyboardAvoidingView>

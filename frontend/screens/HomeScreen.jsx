@@ -31,7 +31,7 @@ function HomeScreen({ navigation }) {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        navigation.replace('Login');
+        navigation.navigate('Login');
       })
       // eslint-disable-next-line no-alert
       .catch((error) => alert(error.message));

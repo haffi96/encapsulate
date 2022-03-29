@@ -30,7 +30,7 @@ function Note(props) {
     <View style={styles.item}>
       <Text style={styles.itemTitle}>{title}</Text>
       <TouchableOpacity onPress={deleteAction}>
-        <MaterialCommunityIcons name="delete" />
+        <MaterialCommunityIcons name="delete" size={20} />
       </TouchableOpacity>
     </View>
   );

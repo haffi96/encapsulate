@@ -1,10 +1,11 @@
 import {
-  StyleSheet, View, Text, TouchableOpacity, Keyboard,
+  StyleSheet, View, Text, TouchableOpacity, ScrollView,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 import Note from '../../components/Note';
 import {
-  retrieveNotesForUser, DeleteNoteForUser, AddNoteForUser,
+  retrieveNotesForUser, DeleteNoteForUser,
 } from '../../services/collections';
 import { auth } from '../../firebase';
 
@@ -16,13 +17,14 @@ const styles = StyleSheet.create({
   notesWrapper: {
     paddingTop: 80,
     paddingHorizontal: 10,
+    paddingBottom: 100,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
   },
   items: {
-    marginTop: 30,
+    marginTop: 20,
   },
   writeTaskWrapper: {
     position: 'absolute',
@@ -70,28 +72,17 @@ const styles = StyleSheet.create({
   },
 });
 
-function AllNotesScreen({ navigation }) {
-  const [note, setNote] = useState('');
+function AllNotesScreen({ props, navigation }) {
   const [noteItems, setNoteItems] = useState([]);
+  const isFocused = useIsFocused();
 
   useEffect(async () => {
-    const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
-    console.log(auth.currentUser.uid);
-    setNoteItems(newNotes);
-  }, []);
-
-  const handleAddNote = async () => {
-    const newNoteItem = {
-      content: note,
-      date: Date.now(),
-      title: 'New note',
-    };
-    const newDocID = await AddNoteForUser(auth.currentUser.uid, newNoteItem);
-    newNoteItem.id = newDocID;
-    setNoteItems([...noteItems, newNoteItem]);
-    setNote('');
-    Keyboard.dismiss();
-  };
+    if (isFocused) {
+      const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
+      console.log(auth.currentUser.uid);
+      setNoteItems(newNotes);
+    }
+  }, [props, isFocused]);
 
   const deleteNote = async (docID, index) => {
     const itemsCopy = [...noteItems];
@@ -104,10 +95,16 @@ function AllNotesScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.notesWrapper}>
         <Text style={styles.sectionTitle}>All notes</Text>
-        <View style={styles.items}>
+        <ScrollView style={styles.items}>
           {
             noteItems.map((noteItem, index) => (
-              <TouchableOpacity key={noteItem.id} onPress={() => navigation.navigate('note')}>
+              <TouchableOpacity
+                key={noteItem.id}
+                onPress={() => navigation.navigate('note', {
+                  noteItem,
+                  index,
+                })}
+              >
                 <Note
                   title={noteItem.title}
                   content={noteItem.content}
@@ -116,7 +113,7 @@ function AllNotesScreen({ navigation }) {
               </TouchableOpacity>
             ))
           }
-        </View>
+        </ScrollView>
       </View>
       <View style={styles.newNote}>
         <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate('createNote')}>
