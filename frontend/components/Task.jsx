@@ -62,7 +62,7 @@ function Task(props) {
         <Text style={status ? styles.lineThroughItemText : styles.itemText}>{text}</Text>
       </View>
       <TouchableOpacity onPress={deleteAction}>
-        <MaterialCommunityIcons name="delete" />
+        <MaterialCommunityIcons name="delete" size={20} />
       </TouchableOpacity>
     </View>
   );
