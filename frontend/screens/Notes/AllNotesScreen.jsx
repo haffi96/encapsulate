@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   },
   items: {
     marginTop: 20,
+    height: '95%',
   },
   writeTaskWrapper: {
     position: 'absolute',

@@ -12,8 +12,6 @@ import {
   retrieveTodosForUser, AddTodoForUser, DeleteTodoForUser, UpdateTodoForUser,
 } from '../services/collections';
 
-// TODO: if not logged in then send to login screen
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -88,10 +86,8 @@ function TodoScreen() {
     Keyboard.dismiss();
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleAddTask();
-    }
+  const handleKeyPress = () => {
+    handleAddTask();
   };
 
   const completeTask = async (docID, index) => {
@@ -102,7 +98,6 @@ function TodoScreen() {
     newTaskItems[index].completed = !taskItems[index].completed;
 
     setTaskItems(newTaskItems);
-    // TODO: Strike through text on complete
   };
 
   const deleteTask = async (docID, index) => {
@@ -119,10 +114,11 @@ function TodoScreen() {
         <ScrollView style={styles.items}>
           {
             taskItems.map((taskItem, index) => (
-              <TouchableOpacity key={taskItem.id} onPress={() => completeTask(taskItem.id, index)}>
+              <TouchableOpacity key={taskItem.id}>
                 <Task
                   text={taskItem.content}
                   status={taskItem.completed}
+                  completeAction={() => completeTask(taskItem.id, index)}
                   deleteAction={() => deleteTask(taskItem.id, index)}
                 />
               </TouchableOpacity>
@@ -135,7 +131,14 @@ function TodoScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.writeTaskWrapper}
       >
-        <TextInput style={styles.input} placeholder="Write a task" value={todo} onChangeText={(text) => setTask(text)} onKeyPress={(e) => handleKeyPress(e)} />
+        <TextInput
+          style={styles.input}
+          placeholder="Write a task"
+          value={todo}
+          onChangeText={(text) => setTask(text)}
+          onSubmitEditing={() => handleKeyPress()}
+          clearButtonMode="while-editing"
+        />
         <TouchableOpacity onPress={() => handleAddTask()}>
           <View style={styles.addWrapper}>
             <MaterialCommunityIcons name="plus" size={25} />

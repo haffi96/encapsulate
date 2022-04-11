@@ -73,12 +73,6 @@ function LoginScreen({ navigation }) {
       .catch((error) => alert(error.message));
   };
 
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSignIn();
-    }
-  };
-
   return (
     <TouchableWithoutFeedback onPress={() => {
       Keyboard.dismiss();
@@ -94,6 +88,7 @@ function LoginScreen({ navigation }) {
             value={email}
             onChangeText={setEmail}
             style={styles.input}
+            clearButtonMode="while-editing"
           />
           <TextInput
             placeholder="Password"
@@ -101,7 +96,7 @@ function LoginScreen({ navigation }) {
             onChangeText={setPassword}
             style={styles.input}
             secureTextEntry
-            onKeyPress={(e) => handleKeyPress(e)}
+            clearButtonMode="while-editing"
           />
         </View>
         <View style={styles.buttonContainer}>
