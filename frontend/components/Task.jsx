@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
     borderRadius: 5,
     marginRight: 15,
+    alignItems: 'center',
   },
   itemText: {
     maxWidth: '80%',
@@ -47,18 +48,29 @@ const styles = StyleSheet.create({
   },
   lineThroughItemText: {
     maxWidth: '80%',
+    fontStyle: 'italic',
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
+    color: 'grey',
   },
 });
 
 function Task(props) {
-  const { status, text, deleteAction } = props;
+  const {
+    status, text, deleteAction, completeAction,
+  } = props;
 
   return (
     <View style={styles.item}>
       <View style={styles.itemsLeft}>
-        <View style={status ? styles.squareComplete : styles.square} />
+        <TouchableOpacity
+          style={status ? styles.squareComplete : styles.square}
+          onPress={completeAction}
+        >
+          <View>
+            {status ? <MaterialCommunityIcons name="check" size={20} /> : null}
+          </View>
+        </TouchableOpacity>
         <Text style={status ? styles.lineThroughItemText : styles.itemText}>{text}</Text>
       </View>
       <TouchableOpacity onPress={deleteAction}>
