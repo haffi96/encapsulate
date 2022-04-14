@@ -114,14 +114,14 @@ function TodoScreen() {
         <ScrollView style={styles.items}>
           {
             taskItems.map((taskItem, index) => (
-              <TouchableOpacity key={taskItem.id}>
+              <View key={taskItem.id}>
                 <Task
                   text={taskItem.content}
                   status={taskItem.completed}
                   completeAction={() => completeTask(taskItem.id, index)}
                   deleteAction={() => deleteTask(taskItem.id, index)}
                 />
-              </TouchableOpacity>
+              </View>
             ))
           }
         </ScrollView>
