@@ -1,0 +1,56 @@
+{
+    "USERS": {
+        "user_doc_id": [
+            {
+                "GYM_LOG": {
+                    "gym_log_doc_id": {
+                        "ROUTINES": {
+                            "routine_doc_id": {
+                                "name": "Pull",
+                                "exercises": [
+                                    "barbell row",
+                                    "lat pull downs",
+                                    "dumbell row",
+                                    "cable pulls",
+                                    "bicep curls"
+                                ]
+                            }
+                        },
+                        "LOG": {
+                            "log_doc_id": {
+                                "created_date": 1648056609429,
+                                "updated_date": 1648056609429,
+                                "routine": "routine_doc_id",
+                                "exercises": [{
+                                    "name": "barbell row",
+                                    "total_sets": 3,
+                                    "sets": [
+                                    {
+                                        "set": 1,
+                                        "weight": 60,
+                                        "notes": "rpe 7"
+                                    },
+                                    {
+                                        "set": 2,
+                                        "weight": 60,
+                                        "notes": "rpe 8"
+                                    }
+                                ]
+                                }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "date": 1648056609429
+            },
+            {
+                "NOTES": {}
+            },
+            {
+                "TODOS": {}
+            }
+        ]
+        }
+    }
+}
