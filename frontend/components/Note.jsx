@@ -59,8 +59,6 @@ function Note(props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpanded = () => setIsExpanded((value) => !value);
 
-  console.log(isExpanded);
-
   let ExpandedView;
   if (isExpanded) {
     ExpandedView = (

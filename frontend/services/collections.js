@@ -34,26 +34,6 @@ export const autoAddDoc = async (userID) => {
   }
 };
 
-export const retrieveAllDocs = async () => {
-  // !! AVOID !!
-  const collectionRef = collection(db, 'users');
-  const data = await getDocs(collectionRef);
-  console.log(data);
-};
-
-export const retrieveAllDocsForUser = async (userID) => {
-  const collectionRef = collection(db, 'users', userID);
-  const data = await getDocs(collectionRef);
-  console.log(data);
-};
-
-export const retrieveCollectionGroup = async (auth) => {
-  const userID = auth.currentUser.uid;
-  const allTodo = await getDocs(collectionGroup(db, 'todo'));
-  console.log(allTodo);
-  console.log(userID);
-};
-
 /// Todos
 export const retrieveTodosForUser = async (userID) => {
   const collectionRef = collection(db, 'users', userID, 'todos');
