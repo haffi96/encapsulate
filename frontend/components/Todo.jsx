@@ -3,6 +3,7 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const styles = StyleSheet.create({
   container: {
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
   },
 });
 
-function Task(props) {
+function Todo(props) {
   const {
     status, text, deleteAction, completeAction,
   } = props;
@@ -106,19 +107,26 @@ function Task(props) {
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpanded = () => setIsExpanded((value) => !value);
 
+  const [reminderTime, setreminderTime] = useState(new Date(Date.now()));
+
+  const onReminderTimeChange = () => {
+    setreminderTime(reminderTime);
+  };
+
   let ExpandedView;
   if (isExpanded) {
     ExpandedView = (
       <View style={styles.expandedItem}>
         <TouchableOpacity style={styles.reminderButton}>
-          <View>
-            <Text>Reminder</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.dueButton}>
-          <View>
-            <Text>Due</Text>
-          </View>
+          <Text>
+            Reminder
+          </Text>
+          <DateTimePicker
+            value={reminderTime}
+            mode="time"
+            is24Hour
+            onChange={onReminderTimeChange}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -149,4 +157,4 @@ function Task(props) {
   );
 }
 
-export default Task;
+export default Todo;

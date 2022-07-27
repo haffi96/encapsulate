@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Task from '../components/Task';
+import Todo from '../components/Todo';
 import { auth } from '../firebase';
 import {
   retrieveTodosForUser, AddTodoForUser, DeleteTodoForUser, UpdateTodoForUser,
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#383A59',
   },
-  tasksWrapper: {
+  todosWrapper: {
     flex: 1,
     paddingTop: 80,
     paddingHorizontal: 20,
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginBottom: 75,
   },
-  writeTaskWrapper: {
+  writeTodoWrapper: {
     position: 'absolute',
     padding: 10,
     bottom: 0,
@@ -65,61 +65,61 @@ const styles = StyleSheet.create({
 });
 
 function TodoScreen() {
-  const [todo, setTask] = useState('');
-  const [taskItems, setTaskItems] = useState([]);
+  const [todo, setTodo] = useState('');
+  const [todoItems, setTodoItems] = useState([]);
 
   useEffect(async () => {
     const newTodos = await retrieveTodosForUser(auth.currentUser.uid);
-    setTaskItems(newTodos);
+    setTodoItems(newTodos);
   }, []);
 
-  const handleAddTask = async () => {
-    const newTaskItem = {
+  const handleAddTodo = async () => {
+    const newTodoItem = {
       content: todo,
       date: Date.now(),
       completed: false,
     };
-    const newDocID = await AddTodoForUser(auth.currentUser.uid, newTaskItem);
-    newTaskItem.id = newDocID;
-    setTaskItems([...taskItems, newTaskItem]);
-    setTask('');
+    const newDocID = await AddTodoForUser(auth.currentUser.uid, newTodoItem);
+    newTodoItem.id = newDocID;
+    setTodoItems([...todoItems, newTodoItem]);
+    setTodo('');
     Keyboard.dismiss();
   };
 
   const handleKeyPress = () => {
-    handleAddTask();
+    handleAddTodo();
   };
 
-  const completeTask = async (docID, index) => {
+  const completeTodo = async (docID, index) => {
     await UpdateTodoForUser(auth.currentUser.uid, docID, {
-      completed: !taskItems[index].completed,
+      completed: !todoItems[index].completed,
     });
-    const newTaskItems = [...taskItems];
-    newTaskItems[index].completed = !taskItems[index].completed;
+    const newTodoItems = [...todoItems];
+    newTodoItems[index].completed = !todoItems[index].completed;
 
-    setTaskItems(newTaskItems);
+    setTodoItems(newTodoItems);
   };
 
-  const deleteTask = async (docID, index) => {
-    const itemsCopy = [...taskItems];
+  const deleteTodo = async (docID, index) => {
+    const itemsCopy = [...todoItems];
     await DeleteTodoForUser(auth.currentUser.uid, docID);
     itemsCopy.splice(index, 1);
-    setTaskItems(itemsCopy);
+    setTodoItems(itemsCopy);
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.tasksWrapper}>
-        <Text style={styles.sectionTitle}>Today's tasks</Text>
+      <View style={styles.todosWrapper}>
+        <Text style={styles.sectionTitle}>Today's Todos</Text>
         <ScrollView style={styles.items}>
           {
-            taskItems.map((taskItem, index) => (
-              <View key={taskItem.id}>
-                <Task
-                  text={taskItem.content}
-                  status={taskItem.completed}
-                  completeAction={() => completeTask(taskItem.id, index)}
-                  deleteAction={() => deleteTask(taskItem.id, index)}
+            todoItems.map((todoItem, index) => (
+              <View key={todoItem.id}>
+                <Todo
+                  text={todoItem.content}
+                  status={todoItem.completed}
+                  completeAction={() => completeTodo(todoItem.id, index)}
+                  deleteAction={() => deleteTodo(todoItem.id, index)}
                 />
               </View>
             ))
@@ -129,17 +129,17 @@ function TodoScreen() {
 
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.writeTaskWrapper}
+        style={styles.writeTodoWrapper}
       >
         <TextInput
           style={styles.input}
-          placeholder="Write a task"
+          placeholder="Add a todo item..."
           value={todo}
-          onChangeText={(text) => setTask(text)}
+          onChangeText={(text) => setTodo(text)}
           onSubmitEditing={() => handleKeyPress()}
           clearButtonMode="while-editing"
         />
-        <TouchableOpacity onPress={() => handleAddTask()}>
+        <TouchableOpacity onPress={() => handleAddTodo()}>
           <View style={styles.addWrapper}>
             <MaterialCommunityIcons name="plus" size={25} />
           </View>
