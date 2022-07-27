@@ -22,7 +22,7 @@ const todoInitData = {
   completed: false,
 };
 
-// Create
+// Common
 export const autoAddDoc = async (userID) => {
   try {
     const todoDoc = await addDoc(collection(db, 'users', userID, 'todos'), todoInitData);
