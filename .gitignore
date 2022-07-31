@@ -21,5 +21,8 @@ encap
 
 
 # ide
-.vscode
+# .vscode
 .idea
+
+# misc
+docs/vault/.vscode
