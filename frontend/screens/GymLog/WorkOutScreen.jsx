@@ -1,5 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import WorkOut from '../../components/WorkOut';
+import Exercise from '../../components/Exercise';
 
 const styles = StyleSheet.create({
   container: {
@@ -13,7 +15,7 @@ const styles = StyleSheet.create({
 function WorkoutScreen() {
   return (
     <View style={styles.container}>
-      <Text>LogListScren</Text>
+      <Exercise />
     </View>
   );
 }
