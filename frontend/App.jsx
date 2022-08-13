@@ -11,16 +11,30 @@ import AllNotesScreen from './screens/Notes/AllNotesScreen';
 import CreateNoteScreen from './screens/Notes/CreateNoteScreen';
 import NoteScreen from './screens/Notes/NoteScreen';
 import TodoScreen from './screens/TodoScreen';
-import GymLogScreen from './screens/GymLogScreen';
+import GymLogScreen from './screens/GymLog/GymLogTempHomeScreen';
+import LogListScreen from './screens/GymLog/LogListScreen';
+import RoutinesScreen from './screens/GymLog/RoutinesScreen';
+import WorkoutScreen from './screens/GymLog/WorkOutScreen';
 
 const Stack = createNativeStackNavigator();
 
-function HomeStack() {
+function NotesStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="allNotes" component={AllNotesScreen} />
       <Stack.Screen options={{ headerShown: false }} name="createNote" component={CreateNoteScreen} />
       <Stack.Screen options={{ headerShown: false }} name="note" component={NoteScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function GymLogStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen options={{ headerShown: false }} name="Gym" component={GymLogScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="LogList" component={LogListScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="Routines" component={RoutinesScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="Workout" component={WorkoutScreen} />
     </Stack.Navigator>
   );
 }
@@ -57,7 +71,7 @@ export default function App() {
             ),
           }}
           name="Notes"
-          component={HomeStack}
+          component={NotesStack}
         />
         <Tab.Screen
           options={{
@@ -76,8 +90,8 @@ export default function App() {
               <MaterialCommunityIcons name="weight" color={color} size={size} />
             ),
           }}
-          name="Gym"
-          component={GymLogScreen}
+          name="GymLogs"
+          component={GymLogStack}
         />
       </Tab.Navigator>
     </NavigationContainer>

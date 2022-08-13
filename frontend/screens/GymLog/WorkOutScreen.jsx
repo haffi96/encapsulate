@@ -10,12 +10,12 @@ const styles = StyleSheet.create({
   },
 });
 
-function GymLogScreen() {
+function WorkoutScreen() {
   return (
     <View style={styles.container}>
-      <Text>GymLogScreen</Text>
+      <Text>LogListScren</Text>
     </View>
   );
 }
 
-export default GymLogScreen;
+export default WorkoutScreen;

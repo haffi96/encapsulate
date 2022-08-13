@@ -71,7 +71,6 @@ function AllNotesScreen({ props, navigation }) {
   useEffect(async () => {
     if (isFocused) {
       const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
-      console.log(auth.currentUser.uid);
       setNoteItems(newNotes);
     }
   }, [props, isFocused]);
