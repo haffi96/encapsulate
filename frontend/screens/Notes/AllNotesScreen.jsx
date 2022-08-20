@@ -27,15 +27,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     height: '95%',
   },
-  writeTaskWrapper: {
-    position: 'absolute',
-    bottom: 60,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
   input: {
     paddingVertical: 15,
     paddingHorizontal: 15,

@@ -1,28 +1,28 @@
 import {
-  collection, addDoc, getDocs, collectionGroup, updateDoc, deleteDoc, doc,
+  collection, addDoc, getDocs, updateDoc, deleteDoc, doc,
 } from 'firebase/firestore';
 import { db } from '../firebase';
 
 // Constants
 const notesInitData = {
   content: 'first note content',
-  date: 'today',
+  date: Date.now(),
   title: 'first note',
 };
 
 const gymLogInitData = {
   content: ['bench', 'pullup'],
-  date: 'today',
+  date: Date.now(),
   title: 'back',
 };
 
 const todoInitData = {
   content: 'go gym',
-  date: 'today',
+  date: Date.now(),
   completed: false,
 };
 
-// Create
+// Common
 export const autoAddDoc = async (userID) => {
   try {
     const todoDoc = await addDoc(collection(db, 'users', userID, 'todos'), todoInitData);

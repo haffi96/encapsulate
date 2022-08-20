@@ -3,6 +3,9 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { UpdateTodoForUser } from '../services/collections';
+import { auth } from '../firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -40,7 +43,7 @@ const styles = StyleSheet.create({
   squareComplete: {
     width: 24,
     height: 24,
-    backgroundColor: 'green',
+    backgroundColor: '#383A59',
     opacity: 0.8,
     borderRadius: 5,
     marginRight: 15,
@@ -49,15 +52,12 @@ const styles = StyleSheet.create({
   itemText: {
     maxWidth: '80%',
   },
-  x: {
-    padding: 8,
-  },
   lineThroughItemText: {
     maxWidth: '80%',
     fontStyle: 'italic',
     textDecorationLine: 'line-through',
     textDecorationStyle: 'solid',
-    color: 'grey',
+    color: 'black',
   },
   deleteButton: {
     position: 'absolute',
@@ -88,37 +88,39 @@ const styles = StyleSheet.create({
     paddingRight: 50,
     borderRadius: 10,
   },
-  dueButton: {
-    backgroundColor: '#c39df9',
-    padding: 5,
-    paddingLeft: 50,
-    paddingRight: 50,
-    borderRadius: 10,
-    marginTop: 5,
-  },
 });
 
-function Task(props) {
+function Todo(props) {
   const {
-    status, text, deleteAction, completeAction,
+    todo, deleteAction, completeAction,
   } = props;
 
   const [isExpanded, setIsExpanded] = useState(false);
   const toggleExpanded = () => setIsExpanded((value) => !value);
+
+  const [reminderTime, setreminderTime] = useState(new Date(Date.now()));
+
+  const onReminderTimeChange = async (_event, selectedDate) => {
+    await UpdateTodoForUser(auth.currentUser.uid, todo.id, {
+      reminder: reminderTime.getTime(),
+    });
+    setreminderTime(selectedDate);
+  };
 
   let ExpandedView;
   if (isExpanded) {
     ExpandedView = (
       <View style={styles.expandedItem}>
         <TouchableOpacity style={styles.reminderButton}>
-          <View>
-            <Text>Reminder</Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.dueButton}>
-          <View>
-            <Text>Due</Text>
-          </View>
+          <Text>
+            Reminder
+          </Text>
+          <DateTimePicker
+            value={reminderTime}
+            mode="time"
+            is24Hour
+            onChange={onReminderTimeChange}
+          />
         </TouchableOpacity>
       </View>
     );
@@ -130,14 +132,18 @@ function Task(props) {
         <View style={styles.item}>
           <View style={styles.itemsLeft}>
             <TouchableOpacity
-              style={status ? styles.squareComplete : styles.square}
+              style={todo.completed ? styles.squareComplete : styles.square}
               onPress={completeAction}
             >
               <View>
-                {status ? <MaterialCommunityIcons name="check" size={20} /> : null}
+                {todo.completed ? <MaterialCommunityIcons name="check" size={20} color="white" /> : null}
               </View>
             </TouchableOpacity>
-            <Text style={status ? styles.lineThroughItemText : styles.itemText}>{text}</Text>
+            <Text
+              style={todo.completed ? styles.lineThroughItemText : styles.itemText}
+            >
+              {todo.content}
+            </Text>
           </View>
           <TouchableOpacity onPress={deleteAction}>
             <MaterialCommunityIcons name="delete" size={20} />
@@ -149,4 +155,4 @@ function Task(props) {
   );
 }
 
-export default Task;
+export default Todo;

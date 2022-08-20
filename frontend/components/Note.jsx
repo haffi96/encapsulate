@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     backgroundColor: '#BD93F9',
-    paddingTop: 25,
+    paddingTop: 20,
     paddingBottom: 20,
     paddingLeft: 20,
     paddingRight: 10,
@@ -25,19 +25,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   expandedItem: {
-    backgroundColor: '#fff',
-    marginTop: 10,
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 10,
     borderRadius: 10,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     shadowColor: '#282A36',
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
     shadowRadius: 1,
+  },
+  pinButton: {
+    backgroundColor: '#c39df9',
+    padding: 10,
+    paddingLeft: 50,
+    paddingRight: 50,
+    borderRadius: 10,
+    marginTop: 10,
   },
   itemTitle: {
     maxWidth: '80%',
@@ -62,11 +67,9 @@ function Note(props) {
   let ExpandedView;
   if (isExpanded) {
     ExpandedView = (
-      <View style={styles.expandedItem}>
-        <Text>
-          ExpandedView
-        </Text>
-      </View>
+      <TouchableOpacity style={styles.pinButton}>
+        <MaterialCommunityIcons name="pin" size={20} />
+      </TouchableOpacity>
     );
   }
 
