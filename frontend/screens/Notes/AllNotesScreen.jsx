@@ -86,7 +86,9 @@ function AllNotesScreen({ props, navigation }) {
     <View style={styles.container}>
       <View style={styles.notesWrapper}>
         <Text style={styles.sectionTitle}>All notes</Text>
-        <ScrollView style={styles.items}>
+        <ScrollView
+          style={styles.items}
+        >
           {
             noteItems.map((noteItem, index) => (
               <TouchableOpacity

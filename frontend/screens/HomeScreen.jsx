@@ -53,7 +53,7 @@ function HomeScreen({ navigation }) {
           <Text>Todo</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => navigation.navigate('GymLogs')}
+          onPress={() => navigation.navigate('Gym')}
           style={styles.button}
         >
           <Text>Gym log</Text>

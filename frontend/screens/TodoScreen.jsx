@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   writeTodoWrapper: {
     position: 'absolute',
     padding: 10,
-    bottom: 0,
+    bottom: 40,
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-around',
