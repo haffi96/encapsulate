@@ -1,21 +1,34 @@
 /* eslint-disable react/no-unstable-nested-components */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // eslint-disable-next-line import/no-unresolved
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import AllNotesScreen from './screens/Notes/AllNotesScreen';
 import CreateNoteScreen from './screens/Notes/CreateNoteScreen';
 import NoteScreen from './screens/Notes/NoteScreen';
 import TodoScreen from './screens/TodoScreen';
-import GymLogScreen from './screens/GymLogScreen';
+import GymLogScreen from './screens/GymLog/GymLogTempHomeScreen';
+import LogListScreen from './screens/GymLog/LogListScreen';
+import RoutinesScreen from './screens/GymLog/RoutinesScreen';
+import WorkoutScreen from './screens/GymLog/WorkOutScreen';
+
+const Tab = createMaterialTopTabNavigator();
+
+export function MyTabs() {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Home" component={HomeScreen} />
+    </Tab.Navigator>
+  );
+}
 
 const Stack = createNativeStackNavigator();
 
-function HomeStack() {
+function NotesStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen options={{ headerShown: false }} name="allNotes" component={AllNotesScreen} />
@@ -25,10 +38,30 @@ function HomeStack() {
   );
 }
 
+function GymLogStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen options={{ headerShown: false }} name="GymLogs" component={GymLogScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="LogList" component={LogListScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="Routines" component={RoutinesScreen} />
+      <Stack.Screen options={{ headerShown: false }} name="Workout" component={WorkoutScreen} />
+    </Stack.Navigator>
+  );
+}
+
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="Login" screenOptions={{ tabBarStyle: { backgroundColor: 'black' }, tabBarShowLabel: true }}>
+      <Tab.Navigator
+        initialRouteName="Login"
+        screenOptions={
+          {
+            tabBarStyle:
+            { backgroundColor: '#BD93F9', position: 'relative', paddingTop: 50 },
+            tabBarShowLabel: false,
+          }
+}
+      >
         <Tab.Screen
           options={{
             headerShown: false,
@@ -57,7 +90,7 @@ export default function App() {
             ),
           }}
           name="Notes"
-          component={HomeStack}
+          component={NotesStack}
         />
         <Tab.Screen
           options={{
@@ -77,19 +110,9 @@ export default function App() {
             ),
           }}
           name="Gym"
-          component={GymLogScreen}
+          component={GymLogStack}
         />
       </Tab.Navigator>
     </NavigationContainer>
-  );
-}
-
-const Tab = createBottomTabNavigator();
-
-export function MyTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-    </Tab.Navigator>
   );
 }
