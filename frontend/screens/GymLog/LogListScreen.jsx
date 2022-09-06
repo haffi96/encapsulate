@@ -105,14 +105,14 @@ function LogListScreen({ props, navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.notesWrapper}>
-        <Text style={styles.sectionTitle}>All notes</Text>
+        <Text style={styles.sectionTitle}>Workouts Log</Text>
         <ScrollView style={styles.items}>
           {
             WorkOutItems.map((WorkoutItem, index) => (
               <TouchableOpacity
                 key={WorkoutItem.id}
                 onPress={() => navigation.navigate('Workout', {
-                  workoutItem: WorkoutItem,
+                  WorkoutItem,
                   index,
                 })}
               >
