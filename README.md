@@ -42,3 +42,4 @@ Easier to open on browser or scan expo bar code
 
 ### Latest Changes
 
+* Add-gym-screen-stuff. PR [#44](https://github.com/haffi96/encapsulate/pull/44) by [@haffi96](https://github.com/haffi96).
