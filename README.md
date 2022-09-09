@@ -38,3 +38,7 @@ Before running, you need to firebase settings added to `frontend`
 
 Need XCode to run ios emulator and android studio to run android emulate.
 Easier to open on browser or scan expo bar code
+
+
+### Latest Changes
+
