@@ -6,6 +6,7 @@ import {
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import { autoAddDoc } from '../services/collections';
+import { RegisterWithEmailAndPassword as registerWithEmailAndPassword } from '../services/users';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,13 +56,18 @@ function LoginScreen({ navigation }) {
   }, []);
 
   const handleSignUp = () => {
-    createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const { user } = userCredential;
-        console.log('Registered with:', user.email);
-        autoAddDoc(user.uid);
-      })
-      .catch((error) => alert(error.message));
+    // createUserWithEmailAndPassword(auth, email, password)
+    //   .then((userCredential) => {
+    //     const { user } = userCredential;
+    //     console.log('Registered with:', user.email);
+    //     autoAddDoc(user.uid);
+    //   })
+    //   .catch((error) => alert(error.message));
+
+      registerWithEmailAndPassword(email, password).then((user) => {
+        const newUser = user;
+        console.log(newUser);
+      }).catch(error => alert(error.message));
   };
 
   const handleSignIn = () => {

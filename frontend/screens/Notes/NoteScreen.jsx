@@ -2,8 +2,7 @@ import {
   StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard,
 } from 'react-native';
 import React, { useState } from 'react';
-import { UpdateNoteForUser } from '../../services/collections';
-import { auth } from '../../firebase';
+import { updateNoteReq } from '../../services/notes';
 
 const styles = StyleSheet.create({
   container: {
@@ -53,21 +52,17 @@ const styles = StyleSheet.create({
 function NoteScreen({ route, navigation }) {
   const { noteItem, index } = route.params;
 
-  const [contentCopy, setContentCopy] = useState(noteItem.content);
+  const [noteBodyCopy, setNoteBodyCopy] = useState(noteItem.body);
   const [titleCopy, setTitleCopy] = useState(noteItem.title);
 
-  const updateNote = async (contentData, titleData) => {
-    const docID = noteItem.id;
-    noteItem.content = contentData;
+  const updateNote = async (noteBody, titleData) => {
+    noteItem.body = noteBody;
     noteItem.title = titleData;
-    UpdateNoteForUser(auth.currentUser.uid, docID, {
-      content: contentData,
-      title: titleData,
-    });
+    await updateNoteReq(noteItem);
   };
 
   const onSave = () => {
-    updateNote(contentCopy, titleCopy, index);
+    updateNote(noteBodyCopy, titleCopy, index);
     navigation.navigate('allNotes');
   };
 
@@ -86,8 +81,8 @@ function NoteScreen({ route, navigation }) {
         />
         <TextInput
           style={styles.input}
-          value={contentCopy}
-          onChangeText={(text) => setContentCopy(text)}
+          value={noteBodyCopy}
+          onChangeText={(text) => setNoteBodyCopy(text)}
           multiline
           autoFocus
         />

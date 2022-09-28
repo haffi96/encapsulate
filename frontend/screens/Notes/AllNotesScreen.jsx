@@ -4,10 +4,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import Note from '../../components/Note';
-import {
-  retrieveNotesForUser, DeleteNoteForUser,
-} from '../../services/collections';
-import { auth } from '../../firebase';
+import { deleteNoteReq, getAllNotes } from '../../services/notes';
 
 const styles = StyleSheet.create({
   container: {
@@ -70,14 +67,14 @@ function AllNotesScreen({ props, navigation }) {
 
   useEffect(async () => {
     if (isFocused) {
-      const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
-      setNoteItems(newNotes);
+      const notes = await getAllNotes()
+      setNoteItems(notes)
     }
   }, [props, isFocused]);
 
-  const deleteNote = async (docID, index) => {
+  const deleteNote = async (note_uuid, index) => {
     const itemsCopy = [...noteItems];
-    await DeleteNoteForUser(auth.currentUser.uid, docID);
+    await deleteNoteReq(note_uuid);
     itemsCopy.splice(index, 1);
     setNoteItems(itemsCopy);
   };
@@ -100,8 +97,8 @@ function AllNotesScreen({ props, navigation }) {
               >
                 <Note
                   title={noteItem.title}
-                  content={noteItem.content}
-                  deleteAction={() => deleteNote(noteItem.id, index)}
+                  body={noteItem.body}
+                  deleteAction={() => deleteNote(noteItem.note_uuid, index)}
                 />
               </TouchableOpacity>
             ))

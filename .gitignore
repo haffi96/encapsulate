@@ -26,3 +26,7 @@ encap
 
 # misc
 docs/vault/.vscode
+
+
+#db data
+tmp

@@ -2,8 +2,7 @@ import {
   StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, TextInput, Keyboard,
 } from 'react-native';
 import React, { useState } from 'react';
-import { AddNoteForUser } from '../../services/collections';
-import { auth } from '../../firebase';
+import { createNote } from '../../services/notes';
 
 const styles = StyleSheet.create({
   container: {
@@ -51,21 +50,22 @@ const styles = StyleSheet.create({
 });
 
 function CreateNoteScreen({ navigation }) {
-  const [newContent, setNewContent] = useState('');
+  const [newNoteBody, setNewNoteBody] = useState('');
   const [newTitle, setNewTitle] = useState('New Note');
 
-  const handleAddNote = async (contentData, titleData) => {
-    const newNoteItem = {
-      content: contentData,
+  const handleAddNote = async (noteBodyData, titleData) => {
+    const newNoteData = {
+      body: noteBodyData,
       date: Date.now(),
       title: titleData,
     };
-    AddNoteForUser(auth.currentUser.uid, newNoteItem);
+    // AddNoteForUser(auth.currentUser.uid, newNoteData);
+    await createNote(newNoteData)
     Keyboard.dismiss();
   };
 
   const onCreate = () => {
-    handleAddNote(newContent, newTitle);
+    handleAddNote(newNoteBody, newTitle);
     navigation.navigate('allNotes');
   };
 
@@ -84,8 +84,8 @@ function CreateNoteScreen({ navigation }) {
         />
         <TextInput
           style={styles.input}
-          value={newContent}
-          onChangeText={(text) => setNewContent(text)}
+          value={newNoteBody}
+          onChangeText={(text) => setNewNoteBody(text)}
           multiline
           autoFocus
         />
