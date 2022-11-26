@@ -1,5 +1,5 @@
 import {
-  StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, TextInput, Keyboard,
+  StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, TextInput, Keyboard, KeyboardAvoidingView
 } from 'react-native';
 import React, { useState } from 'react';
 import { AddNoteForUser } from '../../services/collections';
@@ -8,11 +8,16 @@ import { auth } from '../../firebase';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#383A59',
   },
-  saveNote: {
+  innerContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 90,
+  },
+  createNote: {
     backgroundColor: '#BD93F9',
     width: '50%',
     padding: 10,
@@ -21,7 +26,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     marginBottom: 30,
     bottom: 0,
-    marginLeft: 100,
   },
   touchable: {
     alignItems: 'center',
@@ -35,9 +39,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     width: '95%',
     height: '60%',
-    borderRadius: 10,
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
   },
   titleInput: {
     paddingVertical: 10,
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
 
 function CreateNoteScreen({ navigation }) {
   const [newContent, setNewContent] = useState('');
-  const [newTitle, setNewTitle] = useState('New Note');
+  const [newTitle, setNewTitle] = useState('Title');
 
   const handleAddNote = async (contentData, titleData) => {
     const newNoteItem = {
@@ -74,28 +75,35 @@ function CreateNoteScreen({ navigation }) {
       Keyboard.dismiss();
     }}
     >
-      <View style={styles.container}>
-        <TextInput
-          style={styles.titleInput}
-          value={newTitle}
-          onChangeText={(text) => setNewTitle(text)}
-          multiline
-          autoFocus
-        />
-        <TextInput
-          style={styles.input}
-          value={newContent}
-          onChangeText={(text) => setNewContent(text)}
-          multiline
-          autoFocus
-        />
-        <View style={styles.saveNote}>
-          <TouchableOpacity style={styles.touchable} onPress={onCreate}>
-            <Text>Create</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+      <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={styles.container}
+        >
+          <View style={styles.innerContainer}>
+            <TextInput
+              style={styles.titleInput}
+              value={newTitle}
+              onChangeText={(text) => setNewTitle(text)}
+              multiline
+              autoFocus
+            />
+            <TextInput
+              style={styles.input}
+              value={newContent}
+              onChangeText={(text) => setNewContent(text)}
+              multiline
+              placeholder='Add notes here...'
+              placeholderTextColor={'white'}
+              autoFocus
+            />
+            <View style={styles.createNote}>
+              <TouchableOpacity style={styles.touchable} onPress={onCreate}>
+                <Text>Create</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
   );
 }
 

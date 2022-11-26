@@ -68,11 +68,15 @@ function AllNotesScreen({ props, navigation }) {
   const [noteItems, setNoteItems] = useState([]);
   const isFocused = useIsFocused();
 
-  useEffect(async () => {
-    if (isFocused) {
+  useEffect(() => {
+    const getNotes = async () => {
       const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
       setNoteItems(newNotes);
     }
+    
+    if (isFocused) {
+      getNotes();
+    };
   }, [props, isFocused]);
 
   const deleteNote = async (docID, index) => {

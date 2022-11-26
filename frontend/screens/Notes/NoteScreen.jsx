@@ -1,5 +1,5 @@
 import {
-  StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard,
+  StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard, KeyboardAvoidingView, Platform,
 } from 'react-native';
 import React, { useState } from 'react';
 import { UpdateNoteForUser } from '../../services/collections';
@@ -8,9 +8,14 @@ import { auth } from '../../firebase';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#383A59',
+  },
+  innerContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 90,
   },
   saveNote: {
     backgroundColor: '#BD93F9',
@@ -21,7 +26,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     marginBottom: 30,
     bottom: 0,
-    marginLeft: 100,
   },
   touchable: {
     alignItems: 'center',
@@ -35,9 +39,6 @@ const styles = StyleSheet.create({
     color: '#fff',
     width: '95%',
     height: '60%',
-    borderRadius: 10,
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
   },
   titleInput: {
     paddingVertical: 10,
@@ -76,7 +77,11 @@ function NoteScreen({ route, navigation }) {
       Keyboard.dismiss();
     }}
     >
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={styles.container}
+      >
+      <View style={styles.innerContainer}>
         <TextInput
           style={styles.titleInput}
           value={titleCopy}
@@ -97,6 +102,7 @@ function NoteScreen({ route, navigation }) {
           </TouchableOpacity>
         </View>
       </View>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
