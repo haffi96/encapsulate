@@ -42,4 +42,5 @@ Easier to open on browser or scan expo bar code
 
 ### Latest Changes
 
+* added swipe to delete, ScrollView -> Flatlist. PR [#50](https://github.com/haffi96/encapsulate/pull/50) by [@haffi96](https://github.com/haffi96).
 * Add-gym-screen-stuff. PR [#44](https://github.com/haffi96/encapsulate/pull/44) by [@haffi96](https://github.com/haffi96).
