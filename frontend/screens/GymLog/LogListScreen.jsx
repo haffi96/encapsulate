@@ -11,9 +11,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#383A59',
   },
   workoutsWrapper: {
+    flex: 1,
     paddingTop: 30,
     paddingHorizontal: 10,
-    paddingBottom: 100,
   },
   sectionTitle: {
     fontSize: 24,
@@ -40,6 +40,7 @@ const WorkOutItemsArray = [
 
 function LogListScreen({ props, navigation }) {
   const [workOutItems, setWorkOutItems] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -75,6 +76,13 @@ function LogListScreen({ props, navigation }) {
     </TouchableOpacity>
   );
 
+  const refreshWorkOutItems = async () => {
+    // const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
+    setIsRefreshing(true);
+    setWorkOutItems(WorkOutItemsArray);
+    setIsRefreshing(false);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.workoutsWrapper}>
@@ -83,6 +91,8 @@ function LogListScreen({ props, navigation }) {
           data={workOutItems}
           keyExtractor={(item) => item.id}
           renderItem={(item, index) => renderWorkoutItem(item, index)}
+          onRefresh={refreshWorkOutItems}
+          refreshing={isRefreshing}
         />
       </View>
     </View>
