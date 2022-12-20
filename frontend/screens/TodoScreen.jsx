@@ -30,10 +30,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     paddingBottom: 10,
   },
-  items: {
-    marginTop: 20,
-    marginBottom: 0,
-  },
   inputWrapper: {
     flexDirection: 'row',
     padding: 20,
@@ -63,6 +59,7 @@ const styles = StyleSheet.create({
 function TodoScreen() {
   const [todo, setTodo] = useState('');
   const [todoItems, setTodoItems] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -88,10 +85,6 @@ function TodoScreen() {
     setTodoItems([...todoItems, newTodoItem]);
     setTodo('');
     Keyboard.dismiss();
-  };
-
-  const handleKeyPress = () => {
-    handleAddTodo();
   };
 
   const completeTodo = async (docID, index) => {
@@ -121,6 +114,13 @@ function TodoScreen() {
     </View>
   );
 
+  const refreshTodoItems = async () => {
+    const newTodos = await retrieveTodosForUser(auth.currentUser.uid);
+    setIsRefreshing(true);
+    setTodoItems(newTodos);
+    setIsRefreshing(false);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={() => {
       Keyboard.dismiss();
@@ -136,6 +136,8 @@ function TodoScreen() {
             data={todoItems}
             keyExtractor={(item) => item.id}
             renderItem={(item, index) => renderTodoItem(item, index)}
+            onRefresh={refreshTodoItems}
+            refreshing={isRefreshing}
           />
         </View>
 
@@ -145,7 +147,7 @@ function TodoScreen() {
             placeholder="Add a todo item..."
             value={todo}
             onChangeText={(text) => setTodo(text)}
-            onSubmitEditing={() => handleKeyPress()}
+            onSubmitEditing={() => handleAddTodo()}
             clearButtonMode="while-editing"
           />
           <TouchableOpacity onPress={() => handleAddTodo()}>

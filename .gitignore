@@ -1,4 +1,3 @@
-# frontend
 node_modules/
 .expo/
 dist/
@@ -14,11 +13,6 @@ config.js
 
 # macOS
 .DS_Store
-
-# backend
-__pycache__
-encap
-
 
 # ide
 # .vscode

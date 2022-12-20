@@ -15,19 +15,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#383A59',
   },
   notesWrapper: {
+    flex: 1,
     paddingTop: 30,
     paddingHorizontal: 10,
-    paddingBottom: 100,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     textAlign: 'center',
     paddingBottom: 10,
-  },
-  items: {
-    marginTop: 20,
-    height: '95%',
   },
   newNote: {
     backgroundColor: '#BD93F9',
@@ -49,6 +45,7 @@ const styles = StyleSheet.create({
 
 function AllNotesScreen({ props, navigation }) {
   const [noteItems, setNoteItems] = useState([]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -85,6 +82,13 @@ function AllNotesScreen({ props, navigation }) {
     </TouchableOpacity>
   );
 
+  const refreshNoteItems = async () => {
+    const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
+    setIsRefreshing(true);
+    setNoteItems(newNotes);
+    setIsRefreshing(false);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.notesWrapper}>
@@ -93,6 +97,8 @@ function AllNotesScreen({ props, navigation }) {
           data={noteItems}
           keyExtractor={(item) => item.id}
           renderItem={(item, index) => renderNoteItem(item, index)}
+          onRefresh={refreshNoteItems}
+          refreshing={isRefreshing}
         />
       </View>
       <View style={styles.newNote}>

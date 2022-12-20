@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#383A59',
   },
+  buttonContainer: {
+    width: '60%',
+  },
   button: {
     backgroundColor: '#BD93F9',
     width: '100%',
@@ -23,13 +26,14 @@ const styles = StyleSheet.create({
 function GymLogScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <Text>GymLogTempScreen</Text>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LogList')}>
-        <Text>LogScreen</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Routines')}>
-        <Text>RoutinesScreen</Text>
-      </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('LogList')}>
+          <Text>LogScreen</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Routines')}>
+          <Text>RoutinesScreen</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
