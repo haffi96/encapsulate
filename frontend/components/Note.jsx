@@ -1,20 +1,18 @@
 import {
-  StyleSheet, Text, View, TouchableOpacity,
+  StyleSheet, Text, View, TouchableOpacity, Animated,
 } from 'react-native';
 import React, { useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Swipeable } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     backgroundColor: '#BD93F9',
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 20,
-    paddingRight: 10,
-    borderRadius: 10,
+    padding: 25,
+    borderRadius: 20,
     justifyContent: 'space-between',
-    marginBottom: 5,
+    marginBottom: 2,
     shadowColor: '#282A36',
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
@@ -23,18 +21,6 @@ const styles = StyleSheet.create({
   item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  expandedItem: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    paddingLeft: 10,
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    shadowColor: '#282A36',
-    shadowOffset: { width: 2, height: 3 },
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
   },
   pinButton: {
     backgroundColor: '#c39df9',
@@ -46,7 +32,6 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     maxWidth: '80%',
-    fontWeight: 'bold',
   },
   deleteButton: {
     position: 'absolute',
@@ -55,6 +40,13 @@ const styles = StyleSheet.create({
   infoButton: {
     position: 'absolute',
     right: 50,
+  },
+  rightAction: {
+    backgroundColor: 'white',
+    alignItems: 'center',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });
 
@@ -73,19 +65,32 @@ function Note(props) {
     );
   }
 
+  const renderAction = (progress, dragX) => {
+    const trans = dragX.interpolate({
+      inputRange: [-80, 0],
+      outputRange: [1, 0],
+    });
+
+    return (
+      <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }} />
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.item}>
-        <Text style={styles.itemTitle}>{title}</Text>
-        <TouchableOpacity style={styles.infoButton} onPress={toggleExpanded}>
-          <MaterialCommunityIcons name="information-outline" size={20} />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteButton} onPress={deleteAction}>
-          <MaterialCommunityIcons name="delete" size={20} />
-        </TouchableOpacity>
+    <Swipeable renderRightActions={renderAction} onSwipeableOpen={deleteAction}>
+      <View style={styles.container}>
+        <View style={styles.item}>
+          <Text style={styles.itemTitle}>{title}</Text>
+          <TouchableOpacity style={styles.infoButton} onPress={toggleExpanded}>
+            <MaterialCommunityIcons name="information-outline" size={20} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.deleteButton} onPress={deleteAction}>
+            <MaterialCommunityIcons name="delete" size={20} />
+          </TouchableOpacity>
+        </View>
+        {ExpandedView}
       </View>
-      {ExpandedView}
-    </View>
+    </Swipeable>
   );
 }
 

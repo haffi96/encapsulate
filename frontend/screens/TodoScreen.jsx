@@ -2,17 +2,17 @@
 import {
   Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View,
   StyleSheet,
-  ScrollView,
   TouchableWithoutFeedback,
+  FlatList,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useIsFocused } from '@react-navigation/native';
 import Todo from '../components/Todo';
 import { auth } from '../firebase';
 import {
   retrieveTodosForUser, AddTodoForUser, DeleteTodoForUser, UpdateTodoForUser,
 } from '../services/collections';
-import { useIsFocused } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,21 +21,23 @@ const styles = StyleSheet.create({
   },
   todosWrapper: {
     flex: 1,
-    paddingTop: 80,
-    paddingHorizontal: 20,
+    paddingTop: 30,
+    paddingHorizontal: 10,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+    textAlign: 'center',
+    paddingBottom: 10,
   },
   items: {
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 0,
   },
   inputWrapper: {
     flexDirection: 'row',
     padding: 20,
-    justifyContent: 'space-between' ,
+    justifyContent: 'space-between',
   },
   input: {
     padding: 20,
@@ -44,7 +46,7 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     borderColor: '#C0C0C0',
     borderWidth: 1,
-    marginBottom: 90
+    marginBottom: 90,
   },
   addWrapper: {
     width: 50,
@@ -67,12 +69,11 @@ function TodoScreen() {
     const getTodos = async () => {
       const newTodos = await retrieveTodosForUser(auth.currentUser.uid);
       setTodoItems(newTodos);
-    }
+    };
 
     if (isFocused) {
-      getTodos();      
+      getTodos();
     }
-
   }, [isFocused]);
 
   const handleAddTodo = async () => {
@@ -110,46 +111,49 @@ function TodoScreen() {
     setTodoItems(itemsCopy);
   };
 
+  const renderTodoItem = ({ item, index }) => (
+    <View key={item.id}>
+      <Todo
+        todo={item}
+        completeAction={() => completeTodo(item.id, index)}
+        deleteAction={() => deleteTodo(item.id, index)}
+      />
+    </View>
+  );
+
   return (
     <TouchableWithoutFeedback onPress={() => {
       Keyboard.dismiss();
-    }}>
+    }}
+    >
       <KeyboardAvoidingView
         style={styles.container}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-          <View style={styles.todosWrapper}>
-            <Text style={styles.sectionTitle}>Today's Todos</Text>
-            <ScrollView style={styles.items}>
-              {
-                todoItems.map((todoItem, index) => (
-                  <View key={todoItem.id}>
-                    <Todo
-                      todo={todoItem}
-                      completeAction={() => completeTodo(todoItem.id, index)}
-                      deleteAction={() => deleteTodo(todoItem.id, index)}
-                    />
-                  </View>
-                ))
-              }
-            </ScrollView>
-          </View>
+        <View style={styles.todosWrapper}>
+          <Text style={styles.sectionTitle}>Today's Todos</Text>
+          <FlatList
+            data={todoItems}
+            keyExtractor={(item) => item.id}
+            renderItem={(item, index) => renderTodoItem(item, index)}
+          />
+        </View>
 
-            <View style={styles.inputWrapper}>
-              <TextInput
-                style={styles.input}
-                placeholder="Add a todo item..."
-                value={todo}
-                onChangeText={(text) => setTodo(text)}
-                onSubmitEditing={() => handleKeyPress()}
-                clearButtonMode="while-editing"
-              />
-              <TouchableOpacity onPress={() => handleAddTodo()}>
-                <View style={styles.addWrapper}>
-                  <MaterialCommunityIcons name="plus" size={25} />
-                </View>
-              </TouchableOpacity>
+        <View style={styles.inputWrapper}>
+          <TextInput
+            style={styles.input}
+            placeholder="Add a todo item..."
+            value={todo}
+            onChangeText={(text) => setTodo(text)}
+            onSubmitEditing={() => handleKeyPress()}
+            clearButtonMode="while-editing"
+          />
+          <TouchableOpacity onPress={() => handleAddTodo()}>
+            <View style={styles.addWrapper}>
+              <MaterialCommunityIcons name="plus" size={25} />
             </View>
+          </TouchableOpacity>
+        </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );

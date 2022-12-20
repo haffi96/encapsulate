@@ -12,18 +12,18 @@ const styles = StyleSheet.create({
 });
 
 function WorkoutScreen({ route, navigation }) {
-  const { WorkoutItem, index } = route.params;
+  const { workOutItem, index } = route.params;
 
   return (
     <View style={styles.container}>
       <Text>
-        {WorkoutItem.id}
+        {workOutItem.id}
         ,
         {' '}
-        {WorkoutItem.name}
+        {workOutItem.name}
         ,
         {' '}
-        {WorkoutItem.category}
+        {workOutItem.category}
       </Text>
       <Exercise />
     </View>

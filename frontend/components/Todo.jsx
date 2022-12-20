@@ -1,9 +1,10 @@
 import {
-  StyleSheet, Text, View, TouchableOpacity,
+  StyleSheet, Text, View, TouchableOpacity, Animated,
 } from 'react-native';
 import React, { useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { Swipeable } from 'react-native-gesture-handler';
 import { UpdateTodoForUser } from '../services/collections';
 import { auth } from '../firebase';
 
@@ -11,13 +12,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     backgroundColor: '#BD93F9',
-    paddingTop: 20,
-    paddingBottom: 20,
-    paddingLeft: 20,
-    paddingRight: 10,
-    borderRadius: 10,
+    padding: 20,
+    borderRadius: 20,
     justifyContent: 'space-between',
-    marginBottom: 5,
+    marginBottom: 2,
     shadowColor: '#282A36',
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
@@ -88,6 +86,9 @@ const styles = StyleSheet.create({
     paddingRight: 50,
     borderRadius: 10,
   },
+  reminderText: {
+    textAlign: 'center',
+  },
 });
 
 function Todo(props) {
@@ -112,7 +113,7 @@ function Todo(props) {
     ExpandedView = (
       <View style={styles.expandedItem}>
         <TouchableOpacity style={styles.reminderButton}>
-          <Text>
+          <Text style={styles.reminderText}>
             Reminder
           </Text>
           <DateTimePicker
@@ -126,32 +127,45 @@ function Todo(props) {
     );
   }
 
+  const renderAction = (progress, dragX) => {
+    const trans = dragX.interpolate({
+      inputRange: [-80, 0],
+      outputRange: [1, 0],
+    });
+
+    return (
+      <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }} />
+    );
+  };
+
   return (
-    <View>
-      <TouchableOpacity style={styles.container} onPress={toggleExpanded}>
-        <View style={styles.item}>
-          <View style={styles.itemsLeft}>
-            <TouchableOpacity
-              style={todo.completed ? styles.squareComplete : styles.square}
-              onPress={completeAction}
-            >
-              <View>
-                {todo.completed ? <MaterialCommunityIcons name="check" size={20} color="white" /> : null}
-              </View>
+    <Swipeable renderRightActions={renderAction} onSwipeableOpen={deleteAction}>
+      <View>
+        <TouchableOpacity style={styles.container} onPress={toggleExpanded}>
+          <View style={styles.item}>
+            <View style={styles.itemsLeft}>
+              <TouchableOpacity
+                style={todo.completed ? styles.squareComplete : styles.square}
+                onPress={completeAction}
+              >
+                <View>
+                  {todo.completed ? <MaterialCommunityIcons name="check" size={20} color="white" /> : null}
+                </View>
+              </TouchableOpacity>
+              <Text
+                style={todo.completed ? styles.lineThroughItemText : styles.itemText}
+              >
+                {todo.content}
+              </Text>
+            </View>
+            <TouchableOpacity onPress={deleteAction}>
+              <MaterialCommunityIcons name="delete" size={20} />
             </TouchableOpacity>
-            <Text
-              style={todo.completed ? styles.lineThroughItemText : styles.itemText}
-            >
-              {todo.content}
-            </Text>
           </View>
-          <TouchableOpacity onPress={deleteAction}>
-            <MaterialCommunityIcons name="delete" size={20} />
-          </TouchableOpacity>
-        </View>
-        {ExpandedView}
-      </TouchableOpacity>
-    </View>
+          {ExpandedView}
+        </TouchableOpacity>
+      </View>
+    </Swipeable>
   );
 }
 

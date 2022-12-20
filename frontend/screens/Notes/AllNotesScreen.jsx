@@ -1,5 +1,5 @@
 import {
-  StyleSheet, View, Text, TouchableOpacity, ScrollView,
+  StyleSheet, View, Text, TouchableOpacity, FlatList,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
@@ -15,36 +15,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#383A59',
   },
   notesWrapper: {
-    paddingTop: 80,
+    paddingTop: 30,
     paddingHorizontal: 10,
     paddingBottom: 100,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
+    textAlign: 'center',
+    paddingBottom: 10,
   },
   items: {
     marginTop: 20,
     height: '95%',
-  },
-  input: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: '#FFF',
-    width: 250,
-    borderRadius: 60,
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
-  },
-  addWrapper: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#FFF',
-    borderRadius: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
   },
   newNote: {
     backgroundColor: '#BD93F9',
@@ -57,7 +40,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     marginLeft: 100,
   },
-  touchable: {
+  newButton: {
     alignItems: 'center',
     width: '100%',
     height: '100%',
@@ -72,11 +55,11 @@ function AllNotesScreen({ props, navigation }) {
     const getNotes = async () => {
       const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
       setNoteItems(newNotes);
-    }
-    
+    };
+
     if (isFocused) {
       getNotes();
-    };
+    }
   }, [props, isFocused]);
 
   const deleteNote = async (docID, index) => {
@@ -86,34 +69,34 @@ function AllNotesScreen({ props, navigation }) {
     setNoteItems(itemsCopy);
   };
 
+  const renderNoteItem = ({ item, index }) => (
+    <TouchableOpacity
+      key={item.id}
+      onPress={() => navigation.navigate('note', {
+        noteItem: item,
+        index,
+      })}
+    >
+      <Note
+        title={item.title}
+        content={item.content}
+        deleteAction={() => deleteNote(item.id, index)}
+      />
+    </TouchableOpacity>
+  );
+
   return (
     <View style={styles.container}>
       <View style={styles.notesWrapper}>
-        <Text style={styles.sectionTitle}>All notes</Text>
-        <ScrollView
-          style={styles.items}
-        >
-          {
-            noteItems.map((noteItem, index) => (
-              <TouchableOpacity
-                key={noteItem.id}
-                onPress={() => navigation.navigate('note', {
-                  noteItem,
-                  index,
-                })}
-              >
-                <Note
-                  title={noteItem.title}
-                  content={noteItem.content}
-                  deleteAction={() => deleteNote(noteItem.id, index)}
-                />
-              </TouchableOpacity>
-            ))
-          }
-        </ScrollView>
+        <Text style={styles.sectionTitle}>Notes</Text>
+        <FlatList
+          data={noteItems}
+          keyExtractor={(item) => item.id}
+          renderItem={(item, index) => renderNoteItem(item, index)}
+        />
       </View>
       <View style={styles.newNote}>
-        <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate('createNote')}>
+        <TouchableOpacity style={styles.newButton} onPress={() => navigation.navigate('createNote')}>
           <Text>New</Text>
         </TouchableOpacity>
       </View>

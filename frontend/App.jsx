@@ -57,7 +57,9 @@ export default function App() {
         screenOptions={
           {
             tabBarStyle:
-            { backgroundColor: '#BD93F9', position: 'relative', paddingTop: 50 },
+            {
+              backgroundColor: '#BD93F9', position: 'relative', paddingTop: 50,
+            },
             tabBarShowLabel: false,
           }
 }

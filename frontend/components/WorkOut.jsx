@@ -1,8 +1,8 @@
 import {
-  StyleSheet, Text, View, TouchableOpacity,
+  StyleSheet, Text, View, Animated,
 } from 'react-native';
 import React from 'react';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Swipeable } from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
@@ -43,17 +43,27 @@ function WorkOut(props) {
     name, category, date, deleteAction,
   } = props;
 
+  const renderAction = (progress, dragX) => {
+    const trans = dragX.interpolate({
+      inputRange: [-80, 0],
+      outputRange: [1, 0],
+    });
+
+    return (
+      <Animated.View style={{ flex: 1, transform: [{ translateX: trans }] }} />
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <View style={styles.item}>
-        <Text style={styles.itemTitle}>{name}</Text>
-        <Text>{category}</Text>
-        <Text>{convertToDate(date)}</Text>
-        <TouchableOpacity style={styles.deleteButton} onPress={deleteAction}>
-          <MaterialCommunityIcons name="delete" size={20} />
-        </TouchableOpacity>
+    <Swipeable renderRightActions={renderAction} onSwipeableOpen={deleteAction}>
+      <View style={styles.container}>
+        <View style={styles.item}>
+          <Text style={styles.itemTitle}>{name}</Text>
+          <Text>{category}</Text>
+          <Text>{convertToDate(date)}</Text>
+        </View>
       </View>
-    </View>
+    </Swipeable>
   );
 }
 

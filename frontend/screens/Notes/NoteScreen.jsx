@@ -1,5 +1,12 @@
 import {
-  StyleSheet, Text, TextInput, TouchableOpacity, TouchableWithoutFeedback, View, Keyboard, KeyboardAvoidingView, Platform,
+  StyleSheet,
+  Text, TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import React, { useState } from 'react';
 import { UpdateNoteForUser } from '../../services/collections';
@@ -81,27 +88,27 @@ function NoteScreen({ route, navigation }) {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}
       >
-      <View style={styles.innerContainer}>
-        <TextInput
-          style={styles.titleInput}
-          value={titleCopy}
-          onChangeText={(text) => setTitleCopy(text)}
-          multiline
-          autoFocus
-        />
-        <TextInput
-          style={styles.input}
-          value={contentCopy}
-          onChangeText={(text) => setContentCopy(text)}
-          multiline
-          autoFocus
-        />
-        <View style={styles.saveNote}>
-          <TouchableOpacity style={styles.touchable} onPress={onSave}>
-            <Text>Save</Text>
-          </TouchableOpacity>
+        <View style={styles.innerContainer}>
+          <TextInput
+            style={styles.titleInput}
+            value={titleCopy}
+            onChangeText={(text) => setTitleCopy(text)}
+            multiline
+            autoFocus
+          />
+          <TextInput
+            style={styles.input}
+            value={contentCopy}
+            onChangeText={(text) => setContentCopy(text)}
+            multiline
+            autoFocus
+          />
+          <View style={styles.saveNote}>
+            <TouchableOpacity style={styles.touchable} onPress={onSave}>
+              <Text>Save</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
