@@ -1,5 +1,5 @@
 import {
-  StyleSheet, Text, View, ScrollView, TouchableOpacity,
+  StyleSheet, Text, View, TouchableOpacity, FlatList,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
@@ -10,62 +10,16 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#383A59',
   },
-  notesWrapper: {
-    paddingTop: 80,
+  workoutsWrapper: {
+    paddingTop: 30,
     paddingHorizontal: 10,
     paddingBottom: 100,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-  },
-  items: {
-    marginTop: 20,
-    height: '95%',
-  },
-  writeTaskWrapper: {
-    position: 'absolute',
-    bottom: 60,
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    marginTop: 'auto',
-  },
-  input: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: '#FFF',
-    width: 250,
-    borderRadius: 60,
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
-  },
-  addWrapper: {
-    width: 60,
-    height: 60,
-    backgroundColor: '#FFF',
-    borderRadius: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
-  },
-  newNote: {
-    backgroundColor: '#BD93F9',
-    width: '50%',
-    padding: 10,
-    borderRadius: 20,
-    alignItems: 'center',
-    position: 'absolute',
-    marginBottom: 30,
-    bottom: 0,
-    marginLeft: 100,
-  },
-  touchable: {
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
+    marginBottom: 10,
+    textAlign: 'center',
   },
 });
 
@@ -85,53 +39,52 @@ const WorkOutItemsArray = [
 ];
 
 function LogListScreen({ props, navigation }) {
-  const [WorkOutItems, setWorkOutItems] = useState([]);
+  const [workOutItems, setWorkOutItems] = useState([]);
   const isFocused = useIsFocused();
 
-  useEffect(async () => {
-    if (isFocused) {
-      // const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
+  useEffect(() => {
+    const getWorkouts = async () => {
       setWorkOutItems(WorkOutItemsArray);
+    };
+
+    if (isFocused) {
+      getWorkouts();
     }
   }, [props, isFocused]);
 
-  // const deleteNote = async (docID, index) => {
-  //   const itemsCopy = [...WorkOutItems];
-  //   await DeleteNoteForUser(auth.currentUser.uid, docID);
-  //   itemsCopy.splice(index, 1);
-  //   setWorkOutItems(itemsCopy);
-  // };
+  const deleteWorkoutLog = async (docID, index) => {
+    const itemsCopy = [...workOutItems];
+    itemsCopy.splice(index, 1);
+    setWorkOutItems(itemsCopy);
+  };
+
+  const renderWorkoutItem = ({ item, index }) => (
+    <TouchableOpacity
+      key={item.id}
+      onPress={() => navigation.navigate('Workout', {
+        workOutItem: item,
+        index,
+      })}
+    >
+      <Workout
+        name={item.name}
+        category={item.category}
+        date={item.date}
+        deleteAction={() => deleteWorkoutLog(item.id, index)}
+      />
+    </TouchableOpacity>
+  );
 
   return (
     <View style={styles.container}>
-      <View style={styles.notesWrapper}>
+      <View style={styles.workoutsWrapper}>
         <Text style={styles.sectionTitle}>Workouts Log</Text>
-        <ScrollView style={styles.items}>
-          {
-            WorkOutItems.map((WorkoutItem, index) => (
-              <TouchableOpacity
-                key={WorkoutItem.id}
-                onPress={() => navigation.navigate('Workout', {
-                  WorkoutItem,
-                  index,
-                })}
-              >
-                <Workout
-                  name={WorkoutItem.name}
-                  category={WorkoutItem.category}
-                  date={WorkoutItem.date}
-                  // deleteAction={() => deleteNote(WorkoutItem.id, index)}
-                />
-              </TouchableOpacity>
-            ))
-          }
-        </ScrollView>
+        <FlatList
+          data={workOutItems}
+          keyExtractor={(item) => item.id}
+          renderItem={(item, index) => renderWorkoutItem(item, index)}
+        />
       </View>
-      {/* <View style={styles.newNote}>
-        <TouchableOpacity style={styles.touchable} onPress={() => navigation.navigate('createNote')}>
-          <Text>New</Text>
-        </TouchableOpacity>
-      </View> */}
     </View>
   );
 }

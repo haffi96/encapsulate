@@ -30,9 +30,6 @@ function GymLogScreen({ navigation }) {
       <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Routines')}>
         <Text>RoutinesScreen</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Workout')}>
-        <Text>WorkoutScreen</Text>
-      </TouchableOpacity>
     </View>
   );
 }
