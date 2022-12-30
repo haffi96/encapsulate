@@ -40,7 +40,7 @@ const convertToDate = (timeStamp) => {
 
 function WorkOut(props) {
   const {
-    name, category, date, deleteAction,
+    routineName, date, deleteAction,
   } = props;
 
   const renderAction = (progress, dragX) => {
@@ -58,8 +58,7 @@ function WorkOut(props) {
     <Swipeable renderRightActions={renderAction} onSwipeableOpen={deleteAction}>
       <View style={styles.container}>
         <View style={styles.item}>
-          <Text style={styles.itemTitle}>{name}</Text>
-          <Text>{category}</Text>
+          <Text style={styles.itemTitle}>{routineName}</Text>
           <Text>{convertToDate(date)}</Text>
         </View>
       </View>

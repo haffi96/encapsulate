@@ -11,7 +11,7 @@ import AllNotesScreen from './screens/Notes/AllNotesScreen';
 import CreateNoteScreen from './screens/Notes/CreateNoteScreen';
 import NoteScreen from './screens/Notes/NoteScreen';
 import TodoScreen from './screens/TodoScreen';
-import GymLogScreen from './screens/GymLog/GymLogTempHomeScreen';
+import GymLogScreen from './screens/GymLog/GymLogHomeScreen';
 import LogListScreen from './screens/GymLog/LogListScreen';
 import RoutinesScreen from './screens/GymLog/RoutinesScreen';
 import WorkoutScreen from './screens/GymLog/WorkOutScreen';

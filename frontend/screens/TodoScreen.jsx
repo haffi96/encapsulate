@@ -31,28 +31,28 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   inputWrapper: {
+    flex: 1,
     flexDirection: 'row',
     padding: 20,
-    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   input: {
     padding: 20,
-    backgroundColor: '#FFF',
+    backgroundColor: '#383A59',
+    color: 'white',
     width: 300,
     borderRadius: 60,
     borderColor: '#C0C0C0',
     borderWidth: 1,
-    marginBottom: 90,
   },
   addWrapper: {
     width: 50,
     height: 50,
-    backgroundColor: '#FFF',
+    backgroundColor: '#383A59',
     borderRadius: 60,
     justifyContent: 'center',
     alignItems: 'center',
-    borderColor: '#C0C0C0',
-    borderWidth: 1,
+    borderWidth: 0,
   },
 });
 
@@ -131,7 +131,7 @@ function TodoScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <View style={styles.todosWrapper}>
-          <Text style={styles.sectionTitle}>Today's Todos</Text>
+          <Text style={styles.sectionTitle}>Todos</Text>
           <FlatList
             data={todoItems}
             keyExtractor={(item) => item.id}
@@ -150,11 +150,11 @@ function TodoScreen() {
             onSubmitEditing={() => handleAddTodo()}
             clearButtonMode="while-editing"
           />
-          <TouchableOpacity onPress={() => handleAddTodo()}>
-            <View style={styles.addWrapper}>
-              <MaterialCommunityIcons name="plus" size={25} />
-            </View>
-          </TouchableOpacity>
+          <View style={styles.addWrapper}>
+            <TouchableOpacity onPress={() => handleAddTodo()}>
+              <MaterialCommunityIcons style={{ color: 'white' }} name="plus" size={40} />
+            </TouchableOpacity>
+          </View>
         </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback>

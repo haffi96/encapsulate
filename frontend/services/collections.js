@@ -1,5 +1,5 @@
 import {
-  collection, addDoc, getDocs, updateDoc, deleteDoc, doc,
+  collection, addDoc, getDocs, updateDoc, deleteDoc, doc, getDoc,
 } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -10,10 +10,32 @@ const notesInitData = {
   title: 'first note',
 };
 
-const gymLogInitData = {
-  content: ['bench', 'pullup'],
-  date: Date.now(),
-  title: 'back',
+const gymLogInitData = (routineId) => ({
+  routineName: 'Monday',
+  routineId,
+  created_at: Date.now(),
+  updated_at: Date.now(),
+});
+
+const gymRoutinesInitData = {
+  routineName: 'Monday',
+  exercises: [
+    {
+      exerciseName: 'benchpress',
+      sets: 5,
+      reps: 5,
+    },
+    {
+      exerciseName: 'inclidepress',
+      sets: 5,
+      reps: 5,
+    },
+  ],
+  category: 'Chest',
+};
+
+const gymExercisesInitData = {
+  Chest: ['benchpress', 'inclincepress'],
 };
 
 const todoInitData = {
@@ -25,10 +47,11 @@ const todoInitData = {
 // Common
 export const autoAddDoc = async (userID) => {
   try {
-    const todoDoc = await addDoc(collection(db, 'users', userID, 'todos'), todoInitData);
-    const gymLogDoc = await addDoc(collection(db, 'users', userID, 'gym_log'), gymLogInitData);
-    const notesDoc = await addDoc(collection(db, 'users', userID, 'notes'), notesInitData);
-    console.log('Document written with ID: ', todoDoc.id, gymLogDoc.id, notesDoc.id);
+    await addDoc(collection(db, 'users', userID, 'todos'), todoInitData);
+    const routineDoc = await addDoc(collection(db, 'users', userID, 'routines'), gymRoutinesInitData);
+    await addDoc(collection(db, 'users', userID, 'gym_logs'), gymLogInitData(routineDoc.id));
+    await addDoc(collection(db, 'users', userID, 'exercises'), gymExercisesInitData);
+    addDoc(collection(db, 'users', userID, 'notes'), notesInitData);
   } catch (e) {
     console.error('Error adding document: ', e);
   }
@@ -92,7 +115,35 @@ export const DeleteNoteForUser = async (userID, docID) => {
 
 /// GymLog
 export const retrieveGymLogForUser = async (userID) => {
-  const collectionRef = collection(db, 'users', userID, 'gym_log');
-  const data = await getDocs(collectionRef);
-  console.log(data);
+  const collectionRef = collection(db, 'users', userID, 'gym_logs');
+  const allWorkoutsSnapshot = await getDocs(collectionRef);
+  const data = allWorkoutsSnapshot.docs.map((noteDoc) => {
+    const dataItem = noteDoc.data();
+    dataItem.id = noteDoc.id;
+    return dataItem;
+  });
+  return data;
+};
+
+export const deleteWorkoutLogForUser = async (userID, docID) => {
+  const docRef = doc(db, 'users', userID, 'gym_logs', docID);
+  await deleteDoc(docRef);
+};
+
+// GymLog - Routines
+export const retrieveAllGymLogRoutinesForUser = async (userID) => {
+  const collectionRef = collection(db, 'users', userID, 'routines');
+  const allRoutinesSnapshot = await getDocs(collectionRef);
+  const data = allRoutinesSnapshot.docs.map((noteDoc) => {
+    const dataItem = noteDoc.data();
+    dataItem.id = noteDoc.id;
+    return dataItem;
+  });
+  return data;
+};
+
+export const retrieveSingleGymRoutine = async (userID, routineId) => {
+  const docRef = doc(db, 'users', userID, 'routines', routineId);
+  const routineDocSnap = await getDoc(docRef);
+  return routineDocSnap.data();
 };
