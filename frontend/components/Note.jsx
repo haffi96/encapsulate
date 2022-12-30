@@ -4,16 +4,17 @@ import {
 import React, { useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Swipeable } from 'react-native-gesture-handler';
+import colorScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: '#BD93F9',
+    backgroundColor: colorScheme.accent,
     padding: 25,
     borderRadius: 20,
     justifyContent: 'space-between',
     marginBottom: 2,
-    shadowColor: '#282A36',
+    shadowColor: colorScheme.shadowDark,
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
     shadowRadius: 1,
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   pinButton: {
-    backgroundColor: '#c39df9',
+    backgroundColor: colorScheme.accentSecondary,
     padding: 10,
     paddingLeft: 50,
     paddingRight: 50,

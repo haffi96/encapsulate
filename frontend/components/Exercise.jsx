@@ -3,18 +3,19 @@ import {
 } from 'react-native';
 import React from 'react';
 import Set from './Set';
+import colorScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: '#BD93F9',
+    backgroundColor: colorScheme.accent,
     paddingTop: 10,
     paddingBottom: 10,
     paddingLeft: 20,
     paddingRight: 10,
     borderRadius: 10,
     marginBottom: 5,
-    shadowColor: '#282A36',
+    shadowColor: colorScheme.shadowDark,
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
     shadowRadius: 1,
