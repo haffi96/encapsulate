@@ -4,6 +4,8 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import Workout from '../../components/WorkOut';
+import { deleteWorkoutLogForUser, retrieveGymLogForUser } from '../../services/collections';
+import { auth } from '../../firebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,21 +25,6 @@ const styles = StyleSheet.create({
   },
 });
 
-const WorkOutItemsArray = [
-  {
-    id: 1,
-    name: 'Monday',
-    category: 'Chest',
-    date: Date.now(),
-  },
-  {
-    id: 2,
-    name: 'Tuesday',
-    category: 'Back',
-    date: Date.now(),
-  },
-];
-
 function LogListScreen({ props, navigation }) {
   const [workOutItems, setWorkOutItems] = useState([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -45,7 +32,8 @@ function LogListScreen({ props, navigation }) {
 
   useEffect(() => {
     const getWorkouts = async () => {
-      setWorkOutItems(WorkOutItemsArray);
+      const newWorkouts = await retrieveGymLogForUser(auth.currentUser.uid);
+      setWorkOutItems(newWorkouts);
     };
 
     if (isFocused) {
@@ -55,6 +43,7 @@ function LogListScreen({ props, navigation }) {
 
   const deleteWorkoutLog = async (docID, index) => {
     const itemsCopy = [...workOutItems];
+    await deleteWorkoutLogForUser(auth.currentUser.uid, docID);
     itemsCopy.splice(index, 1);
     setWorkOutItems(itemsCopy);
   };
@@ -68,18 +57,17 @@ function LogListScreen({ props, navigation }) {
       })}
     >
       <Workout
-        name={item.name}
-        category={item.category}
-        date={item.date}
+        routineName={item.routineName}
+        date={item.created_at}
         deleteAction={() => deleteWorkoutLog(item.id, index)}
       />
     </TouchableOpacity>
   );
 
   const refreshWorkOutItems = async () => {
-    // const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
+    const newWorkouts = await retrieveGymLogForUser(auth.currentUser.uid);
     setIsRefreshing(true);
-    setWorkOutItems(WorkOutItemsArray);
+    setWorkOutItems(newWorkouts);
     setIsRefreshing(false);
   };
 

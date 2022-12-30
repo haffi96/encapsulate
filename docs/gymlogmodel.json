@@ -1,0 +1,39 @@
+{
+    "gym_log": {
+        "logs": [
+            {
+                "id": 1,
+                "routineID": "uuid",
+                "routineName": "Monday",
+                "created_at": "timestamp",
+                "updated_at": "timestamp"
+            }
+        ],
+        "routines": [
+            {
+                "routineID": "uuid",
+                "Monday": [
+                    {
+                        "benchpress": {
+                            "sets": 5,
+                            "reps": 5
+                        },
+                        "inclincepress": {
+                            "sets": 5,
+                            "reps": 5
+                        }
+                    }
+                ],
+                "category": "Chest"
+            }
+        ],
+        "exercises": [
+            {
+                "Chest": ["benchpress", "inclincepress"]
+            },
+            {
+                "Back": ["Pullups", "barbellrow"]
+            }
+        ]
+    }
+}

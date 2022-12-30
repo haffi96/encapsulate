@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 });
 
 function NoteScreen({ route, navigation }) {
-  const { noteItem, index } = route.params;
+  const { noteItem } = route.params;
 
   const [contentCopy, setContentCopy] = useState(noteItem.content);
   const [titleCopy, setTitleCopy] = useState(noteItem.title);
@@ -75,7 +75,7 @@ function NoteScreen({ route, navigation }) {
   };
 
   const onSave = () => {
-    updateNote(contentCopy, titleCopy, index);
+    updateNote(contentCopy, titleCopy);
     navigation.navigate('allNotes');
   };
 
