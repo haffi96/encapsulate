@@ -15,6 +15,7 @@ import GymLogScreen from './screens/GymLog/GymLogHomeScreen';
 import LogListScreen from './screens/GymLog/LogListScreen';
 import RoutinesScreen from './screens/GymLog/RoutinesScreen';
 import WorkoutScreen from './screens/GymLog/WorkOutScreen';
+import colorScheme from './colors';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -58,7 +59,7 @@ export default function App() {
           {
             tabBarStyle:
             {
-              backgroundColor: '#BD93F9', position: 'relative', paddingTop: 50,
+              backgroundColor: colorScheme.accent, position: 'relative', paddingTop: 50,
             },
             tabBarShowLabel: false,
           }

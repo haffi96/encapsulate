@@ -7,16 +7,17 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { Swipeable } from 'react-native-gesture-handler';
 import { UpdateTodoForUser } from '../services/collections';
 import { auth } from '../firebase';
+import colorScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: '#BD93F9',
+    backgroundColor: colorScheme.accent,
     padding: 20,
     borderRadius: 20,
     justifyContent: 'space-between',
     marginBottom: 2,
-    shadowColor: '#282A36',
+    shadowColor: colorScheme.shadowDark,
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
     shadowRadius: 1,
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
   square: {
     width: 24,
     height: 24,
-    backgroundColor: '#383A59',
+    backgroundColor: colorScheme.background,
     opacity: 0.8,
     borderRadius: 5,
     marginRight: 15,
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
   squareComplete: {
     width: 24,
     height: 24,
-    backgroundColor: '#383A59',
+    backgroundColor: colorScheme.background,
     opacity: 0.8,
     borderRadius: 5,
     marginRight: 15,
@@ -74,13 +75,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'space-between',
-    shadowColor: '#282A36',
+    shadowColor: colorScheme.shadowDark,
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
     shadowRadius: 1,
   },
   reminderButton: {
-    backgroundColor: '#c39df9',
+    backgroundColor: colorScheme.accentSecondary,
     padding: 5,
     paddingLeft: 50,
     paddingRight: 50,

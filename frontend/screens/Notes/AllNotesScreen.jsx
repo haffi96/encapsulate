@@ -8,11 +8,12 @@ import {
   retrieveNotesForUser, DeleteNoteForUser,
 } from '../../services/collections';
 import { auth } from '../../firebase';
+import colorScheme from '../../colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#383A59',
+    backgroundColor: colorScheme.background,
   },
   notesWrapper: {
     flex: 1,
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   newNote: {
-    backgroundColor: '#BD93F9',
+    backgroundColor: colorScheme.accent,
     width: '50%',
     padding: 10,
     borderRadius: 20,

@@ -6,13 +6,14 @@ import {
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import { autoAddDoc } from '../services/collections';
+import colorScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#383A59',
+    backgroundColor: colorScheme.background,
   },
   inputContainer: {
     width: '80%',
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: '#BD93F9',
+    backgroundColor: colorScheme.accent,
     width: '100%',
     padding: 15,
     borderRadius: 20,
