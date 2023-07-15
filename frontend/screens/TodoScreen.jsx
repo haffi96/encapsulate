@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import {
-  Keyboard, KeyboardAvoidingView, Platform, Text, TextInput, TouchableOpacity, View,
+  Keyboard, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View,
   StyleSheet,
   TouchableWithoutFeedback,
   FlatList,
