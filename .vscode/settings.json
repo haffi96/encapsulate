@@ -7,11 +7,16 @@
     "editor.suggest.snippetsPreventQuickSuggestions": false,
     "editor.suggest.showSnippets": true,
     "editor.tabCompletion": "on",
+    "editor.tabSize": 4,
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
-      },
-      "eslint.validate": [
+    },
+    "eslint.validate": [
         "javascript"
-      ],
-      "window.commandCenter": true
+    ],
+    "window.commandCenter": true,
+    "[javascript]": {
+        "editor.maxTokenizationLineLength": 2500,
+        "editor.tabSize": 4
+    }
 }

@@ -1,118 +1,70 @@
 import {
-  StyleSheet,
-  Text, View,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  TextInput,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
+    Text, View,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    TextInput,
+    Keyboard,
+    KeyboardAvoidingView,
+    Platform,
 } from 'react-native';
 import React, { useState } from 'react';
 import { AddNoteForUser } from '../../services/collections';
 import { auth } from '../../firebase';
-import defaultScheme from '../../colors';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: defaultScheme.background,
-  },
-  innerContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 90,
-  },
-  createNote: {
-    backgroundColor: defaultScheme.accent,
-    width: '50%',
-    padding: 10,
-    borderRadius: 20,
-    alignItems: 'center',
-    position: 'absolute',
-    marginBottom: 30,
-    bottom: 0,
-  },
-  touchable: {
-    alignItems: 'center',
-    width: '100%',
-    height: '100%',
-  },
-  input: {
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    backgroundColor: defaultScheme.background,
-    color: '#fff',
-    width: '95%',
-    height: '60%',
-  },
-  titleInput: {
-    paddingVertical: 10,
-    paddingHorizontal: 5,
-    backgroundColor: defaultScheme.background,
-    color: '#fff',
-    width: '95%',
-    fontWeight: 'bold',
-    fontSize: 25,
-  },
-});
 
 function CreateNoteScreen({ navigation }) {
-  const [newContent, setNewContent] = useState('');
-  const [newTitle, setNewTitle] = useState('Title');
+    const [newContent, setNewContent] = useState('');
+    const [newTitle, setNewTitle] = useState('Title');
 
-  const handleAddNote = async (contentData, titleData) => {
-    const newNoteItem = {
-      content: contentData,
-      date: Date.now(),
-      title: titleData,
+    const handleAddNote = async (contentData, titleData) => {
+        const newNoteItem = {
+            content: contentData,
+            date: Date.now(),
+            title: titleData,
+        };
+        AddNoteForUser(auth.currentUser.uid, newNoteItem);
+        Keyboard.dismiss();
     };
-    AddNoteForUser(auth.currentUser.uid, newNoteItem);
-    Keyboard.dismiss();
-  };
 
-  const onCreate = () => {
-    handleAddNote(newContent, newTitle);
-    navigation.navigate('allNotes');
-  };
+    const onCreate = () => {
+        handleAddNote(newContent, newTitle);
+        navigation.navigate('allNotes');
+    };
 
-  return (
-    <TouchableWithoutFeedback onPress={() => {
-      Keyboard.dismiss();
-    }}
-    >
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={styles.container}
-      >
-        <View style={styles.innerContainer}>
-          <TextInput
-            style={styles.titleInput}
-            value={newTitle}
-            onChangeText={(text) => setNewTitle(text)}
-            multiline
-            autoFocus
-          />
-          <TextInput
-            style={styles.input}
-            value={newContent}
-            onChangeText={(text) => setNewContent(text)}
-            multiline
-            placeholder="Add notes here..."
-            placeholderTextColor="white"
-            autoFocus
-          />
-          <View style={styles.createNote}>
-            <TouchableOpacity style={styles.touchable} onPress={onCreate}>
-              <Text>Create</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
-  );
+    return (
+        <TouchableWithoutFeedback onPress={() => {
+            Keyboard.dismiss();
+        }}
+        >
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                className="flex bg-purple h-full"
+            >
+                <View className="flex flex-col h-4/5 space-y-2">
+                    <TextInput
+                        className="py-10 px-5 text-white font-bold text-xl"
+                        value={newTitle}
+                        onChangeText={(text) => setNewTitle(text)}
+                        multiline
+                        autoFocus
+                    />
+                    <TextInput
+                        className="px-5 text-white text-lg h-1/2"
+                        value={newContent}
+                        onChangeText={(text) => setNewContent(text)}
+                        multiline
+                        placeholder="Add notes here..."
+                        placeholderTextColor="white"
+                        autoFocus
+                    />
+                    <View className="bg-accent w-1/2 m-auto h-10 justify-center items-center rounded-2xl">
+                        <TouchableOpacity onPress={onCreate}>
+                            <Text>Create</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </KeyboardAvoidingView>
+        </TouchableWithoutFeedback>
+    );
 }
 
 export default CreateNoteScreen;

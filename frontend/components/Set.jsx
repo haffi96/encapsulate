@@ -1,44 +1,25 @@
 import {
-  StyleSheet, TextInput, View,
+    TextInput, View,
 } from 'react-native';
 import React from 'react';
-import defaultScheme from '../colors';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    paddingBottom: 5,
-  },
-  input: {
-    width: '30%',
-    textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: defaultScheme.borderBottom,
-    borderRadius: 2,
-    height: '150%',
-    marginHorizontal: 20,
-  },
-});
 
 function Set() {
-  return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="#"
-        placeholderTextColor="#62669d"
-        keyboardType="number-pad"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="-"
-        placeholderTextColor="#62669d"
-        keyboardType="number-pad"
-      />
-    </View>
-  );
+    return (
+        <View className="flex flex-row justify-center pb-2 space-x-2">
+            <TextInput
+                className="w-1/3 text-center border border-b-1 border-t-0 border-l-0 border-r-0 border-customBorderBottom"
+                placeholder="#"
+                placeholderTextColor="#62669d"
+                keyboardType="number-pad"
+            />
+            <TextInput
+                className="w-1/3 text-center border border-b-1 border-t-0 border-l-0 border-r-0 border-customBorderBottom"
+                placeholder="-"
+                placeholderTextColor="#62669d"
+                keyboardType="number-pad"
+            />
+        </View>
+    );
 }
 
 export default Set;
