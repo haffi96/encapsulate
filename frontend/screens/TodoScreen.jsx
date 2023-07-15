@@ -13,12 +13,12 @@ import { auth } from '../firebase';
 import {
   retrieveTodosForUser, AddTodoForUser, DeleteTodoForUser, UpdateTodoForUser,
 } from '../services/collections';
-import colorScheme from '../colors';
+import defaultScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
   },
   todosWrapper: {
     flex: 1,
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
   },
   input: {
     padding: 20,
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
     color: 'white',
     width: 300,
     borderRadius: 60,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   addWrapper: {
     width: 50,
     height: 50,
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
     borderRadius: 60,
     justifyContent: 'center',
     alignItems: 'center',

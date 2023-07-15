@@ -1,8 +1,9 @@
 import { Appearance } from 'react-native';
+import { storeData } from './services/storage';
 
 const systemTheme = Appearance.getColorScheme();
 
-const Dark = {
+const darkTheme = {
   background: '#383A59',
   accent: '#BD93F9',
   shadowDark: '#282A36',
@@ -10,7 +11,7 @@ const Dark = {
   borderBottom: '#62669d',
 };
 
-const Light = {
+const lightTheme = {
   background: '#EEE7F4',
   accent: '#BD93F9',
   shadowDark: '#282A36',
@@ -18,6 +19,8 @@ const Light = {
   borderBottom: '#62669d',
 };
 
-const colorScheme = systemTheme === 'dark' ? Dark : Light;
+const defaultScheme = systemTheme === 'dark' ? darkTheme : lightTheme;
 
-export default colorScheme;
+storeData('@colorScheme', defaultScheme);
+
+export default defaultScheme;

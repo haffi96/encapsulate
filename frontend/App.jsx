@@ -1,10 +1,11 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 // eslint-disable-next-line import/no-unresolved
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { onAuthStateChanged } from 'firebase/auth';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import AllNotesScreen from './screens/Notes/AllNotesScreen';
@@ -15,18 +16,11 @@ import GymLogScreen from './screens/GymLog/GymLogHomeScreen';
 import LogListScreen from './screens/GymLog/LogListScreen';
 import RoutinesScreen from './screens/GymLog/RoutinesScreen';
 import WorkoutScreen from './screens/GymLog/WorkOutScreen';
-import colorScheme from './colors';
+import defaultScheme from './colors';
+// import SettingsScreen from './screens/SettingsScreen';
+import { auth } from './firebase';
 
 const Tab = createMaterialTopTabNavigator();
-
-export function MyTabs() {
-  return (
-    <Tab.Navigator>
-      <Tab.Screen name="Home" component={HomeScreen} />
-    </Tab.Navigator>
-  );
-}
-
 const Stack = createNativeStackNavigator();
 
 function NotesStack() {
@@ -50,72 +44,149 @@ function GymLogStack() {
   );
 }
 
+function LoggedInStack() {
+  return (
+    <Tab.Navigator
+      screenOptions={
+        {
+          tabBarStyle:
+          {
+            backgroundColor: defaultScheme.accent, position: 'relative', paddingTop: 50,
+          },
+          tabBarShowLabel: false,
+        }
+      }
+    >
+      <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="home" color={color} size={size} />
+          ),
+        }}
+        name="Home"
+        component={HomeScreen}
+      />
+      <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="note" color={color} size={size} />
+          ),
+        }}
+        name="Notes"
+        component={NotesStack}
+      />
+      <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="check" color={color} size={size} />
+          ),
+        }}
+        name="Todo"
+        component={TodoScreen}
+      />
+      <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="weight" color={color} size={size} />
+          ),
+        }}
+        name="Gym"
+        component={GymLogStack}
+      />
+      {/* <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cog" color={color} size={size} />
+          ),
+        }}
+        name="Settings"
+        component={SettingsScreen}
+      /> */}
+    </Tab.Navigator>
+  );
+}
+
+function LoggedOutStack() {
+  return (
+    <Tab.Navigator
+      screenOptions={
+        {
+          tabBarStyle:
+          {
+            backgroundColor: defaultScheme.accent, position: 'relative', paddingTop: 50,
+          },
+          tabBarShowLabel: false,
+        }
+      }
+    >
+      <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="login" color={color} size={size} />
+          ),
+        }}
+        name="Login"
+        component={LoginScreen}
+      />
+      {/* <Tab.Screen
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="cog" color={color} size={size} />
+          ),
+        }}
+        name="Settings"
+        component={SettingsScreen}
+      /> */}
+    </Tab.Navigator>
+  );
+}
+
 export default function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkAuth = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setLoggedIn(true);
+      }
+    });
+    return checkAuth;
+  }, []);
+
+  if (loggedIn) {
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="LoggedIn"
+            component={LoggedInStack}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="LoginPage"
+            component={LoggedOutStack}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
   return (
     <NavigationContainer>
-      <Tab.Navigator
-        initialRouteName="Login"
-        screenOptions={
-          {
-            tabBarStyle:
-            {
-              backgroundColor: colorScheme.accent, position: 'relative', paddingTop: 50,
-            },
-            tabBarShowLabel: false,
-          }
-}
-      >
-        <Tab.Screen
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="login" color={color} size={size} />
-            ),
-          }}
-          name="Login"
-          component={LoginScreen}
+      <Stack.Navigator>
+        <Stack.Screen
+          name="LoggedOut"
+          component={LoggedOutStack}
+          options={{ headerShown: false }}
         />
-        <Tab.Screen
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="home" color={color} size={size} />
-            ),
-          }}
-          name="Home"
-          component={HomeScreen}
-        />
-        <Tab.Screen
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="note" color={color} size={size} />
-            ),
-          }}
-          name="Notes"
-          component={NotesStack}
-        />
-        <Tab.Screen
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="check" color={color} size={size} />
-            ),
-          }}
-          name="Todo"
-          component={TodoScreen}
-        />
-        <Tab.Screen
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => (
-              <MaterialCommunityIcons name="weight" color={color} size={size} />
-            ),
-          }}
-          name="Gym"
-          component={GymLogStack}
-        />
-      </Tab.Navigator>
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

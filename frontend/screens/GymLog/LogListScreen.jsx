@@ -6,12 +6,12 @@ import { useIsFocused } from '@react-navigation/native';
 import Workout from '../../components/WorkOut';
 import { deleteWorkoutLogForUser, retrieveGymLogForUser } from '../../services/collections';
 import { auth } from '../../firebase';
-import colorScheme from '../../colors';
+import defaultScheme from '../../colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
   },
   workoutsWrapper: {
     flex: 1,

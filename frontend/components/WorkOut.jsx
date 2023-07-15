@@ -3,12 +3,12 @@ import {
 } from 'react-native';
 import React from 'react';
 import { Swipeable } from 'react-native-gesture-handler';
-import colorScheme from '../colors';
+import defaultScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    backgroundColor: colorScheme.accent,
+    backgroundColor: defaultScheme.accent,
     paddingTop: 20,
     paddingBottom: 20,
     paddingLeft: 20,
@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'space-between',
     marginBottom: 5,
-    shadowColor: colorScheme.shadowDark,
+    shadowColor: defaultScheme.shadowDark,
     shadowOffset: { width: 2, height: 3 },
     shadowOpacity: 0.8,
     shadowRadius: 1,

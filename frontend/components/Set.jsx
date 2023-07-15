@@ -2,7 +2,7 @@ import {
   StyleSheet, TextInput, View,
 } from 'react-native';
 import React from 'react';
-import colorScheme from '../colors';
+import defaultScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     width: '30%',
     textAlign: 'center',
     borderBottomWidth: 1,
-    borderBottomColor: colorScheme.borderBottom,
+    borderBottomColor: defaultScheme.borderBottom,
     borderRadius: 2,
     height: '150%',
     marginHorizontal: 20,

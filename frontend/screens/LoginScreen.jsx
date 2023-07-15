@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View,
   TouchableWithoutFeedback, Keyboard,
 } from 'react-native';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
 import { autoAddDoc } from '../services/collections';
-import colorScheme from '../colors';
+import defaultScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
   },
   inputContainer: {
     width: '80%',
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   button: {
-    backgroundColor: colorScheme.accent,
+    backgroundColor: defaultScheme.accent,
     width: '100%',
     padding: 15,
     borderRadius: 20,
@@ -45,15 +45,6 @@ const styles = StyleSheet.create({
 function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigation.navigate('Home');
-      }
-    });
-    return unsubscribe;
-  }, []);
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
@@ -70,6 +61,7 @@ function LoginScreen({ navigation }) {
       .then((userCredential) => {
         const { user } = userCredential;
         console.log('Logged in with:', user.uid);
+        navigation.navigate('LoggedIn');
       })
       .catch((error) => alert(error.message));
   };

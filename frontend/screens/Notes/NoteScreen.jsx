@@ -11,12 +11,12 @@ import {
 import React, { useState } from 'react';
 import { UpdateNoteForUser } from '../../services/collections';
 import { auth } from '../../firebase';
-import colorScheme from '../../colors';
+import defaultScheme from '../../colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
   },
   innerContainer: {
     flex: 1,
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     marginBottom: 90,
   },
   saveNote: {
-    backgroundColor: colorScheme.accent,
+    backgroundColor: defaultScheme.accent,
     width: '50%',
     padding: 10,
     borderRadius: 20,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
   input: {
     paddingVertical: 15,
     paddingHorizontal: 15,
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
     color: '#fff',
     width: '95%',
     height: '60%',
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
   titleInput: {
     paddingVertical: 10,
     paddingHorizontal: 5,
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
     color: '#fff',
     width: '95%',
     fontWeight: 'bold',

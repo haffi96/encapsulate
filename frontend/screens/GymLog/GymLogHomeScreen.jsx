@@ -2,20 +2,20 @@ import {
   StyleSheet, Text, View, TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import colorScheme from '../../colors';
+import defaultScheme from '../../colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
   },
   buttonContainer: {
     width: '60%',
   },
   button: {
-    backgroundColor: colorScheme.accent,
+    backgroundColor: defaultScheme.accent,
     width: '100%',
     padding: 15,
     borderRadius: 20,

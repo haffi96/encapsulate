@@ -4,14 +4,14 @@ import {
 import React from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebase';
-import colorScheme from '../colors';
+import defaultScheme from '../colors';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: colorScheme.background,
+    backgroundColor: defaultScheme.background,
   },
   buttonContainer: {
     width: '60%',
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   button: {
-    backgroundColor: colorScheme.accent,
+    backgroundColor: defaultScheme.accent,
     width: '100%',
     padding: 15,
     borderRadius: 20,
@@ -32,7 +32,7 @@ function HomeScreen({ navigation }) {
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
-        navigation.navigate('Login');
+        navigation.navigate('LoginPage');
       })
       // eslint-disable-next-line no-alert
       .catch((error) => alert(error.message));
