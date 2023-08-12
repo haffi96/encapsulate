@@ -1,34 +1,29 @@
 import React, { useState } from 'react';
 import {
     KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View,
-    TouchableWithoutFeedback, Keyboard, Platform,
+    TouchableWithoutFeedback, Keyboard,
 } from 'react-native';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../firebase';
-import { autoAddDoc } from '../services/collections';
+import { useAuth } from '../context/AuthContext';
 
 function LoginScreen({ navigation }) {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const { onRegister, onLogin } = useAuth();
 
-    const handleSignUp = () => {
-        createUserWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const { user } = userCredential;
-                console.log('Registered with:', user.email);
-                autoAddDoc(user.uid);
-            })
-            .catch((error) => alert(error.message));
+    const handleSignIn = async () => {
+        const result = await onLogin(email, password);
+        if (result && result.error) {
+            alert(result.msg);
+        }
     };
 
-    const handleSignIn = () => {
-        signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-                const { user } = userCredential;
-                console.log('Logged in with:', user.uid);
-                navigation.navigate('LoggedIn');
-            })
-            .catch((error) => alert(error.message));
+    const handleSignUp = async () => {
+        const result = await onRegister(email, password);
+        if (result && result.error) {
+            alert(result.msg);
+        } else {
+            handleSignIn();
+        }
     };
 
     return (

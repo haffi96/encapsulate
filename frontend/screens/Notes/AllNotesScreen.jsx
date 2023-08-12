@@ -7,16 +7,17 @@ import Note from '../../components/Note';
 import {
     retrieveNotesForUser, DeleteNoteForUser,
 } from '../../services/collections';
-import { auth } from '../../firebase';
+import { useAuth } from '../../context/AuthContext';
 
 function AllNotesScreen({ props, navigation }) {
     const [noteItems, setNoteItems] = useState([]);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const isFocused = useIsFocused();
+    const { authState } = useAuth();
 
     useEffect(() => {
         const getNotes = async () => {
-            const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
+            const newNotes = await retrieveNotesForUser(authState.token);
             setNoteItems(newNotes);
         };
 
@@ -25,16 +26,16 @@ function AllNotesScreen({ props, navigation }) {
         }
     }, [props, isFocused]);
 
-    const deleteNote = async (docID, index) => {
+    const deleteNote = async (noteUuid, index) => {
         const itemsCopy = [...noteItems];
-        await DeleteNoteForUser(auth.currentUser.uid, docID);
+        await DeleteNoteForUser(authState.token, noteUuid);
         itemsCopy.splice(index, 1);
         setNoteItems(itemsCopy);
     };
 
     const renderNoteItem = ({ item, index }) => (
         <TouchableOpacity
-            key={item.id}
+            key={item.note_uuid}
             onPress={() => navigation.navigate('note', {
                 noteItem: item,
                 index,
@@ -42,14 +43,13 @@ function AllNotesScreen({ props, navigation }) {
         >
             <Note
                 title={item.title}
-                content={item.content}
-                deleteAction={() => deleteNote(item.id, index)}
+                deleteAction={() => deleteNote(item.note_uuid, index)}
             />
         </TouchableOpacity>
     );
 
     const refreshNoteItems = async () => {
-        const newNotes = await retrieveNotesForUser(auth.currentUser.uid);
+        const newNotes = await retrieveNotesForUser(authState.token);
         setIsRefreshing(true);
         setNoteItems(newNotes);
         setIsRefreshing(false);
@@ -62,7 +62,7 @@ function AllNotesScreen({ props, navigation }) {
                 <FlatList
                     className="h-full"
                     data={noteItems}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item.note_uuid}
                     renderItem={(item, index) => renderNoteItem(item, index)}
                     onRefresh={refreshNoteItems}
                     refreshing={isRefreshing}

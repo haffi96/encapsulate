@@ -20,3 +20,5 @@ config.js
 
 # misc
 docs/vault/.vscode
+
+.env

@@ -3,6 +3,8 @@ import {
 } from 'firebase/firestore';
 import { db } from '../firebase';
 
+const API_URL = process.env.EXPO_PUBLIC_API_BASE_URL;
+
 // Constants
 const notesInitData = {
     content: 'first note content',
@@ -86,31 +88,50 @@ export const DeleteTodoForUser = async (userID, docID) => {
 };
 
 /// Notes
-export const retrieveNotesForUser = async (userID) => {
-    const collectionRef = collection(db, 'users', userID, 'notes');
-    const allNotesSnapshot = await getDocs(collectionRef);
-    const data = allNotesSnapshot.docs.map((noteDoc) => {
-        const dataItem = noteDoc.data();
-        dataItem.id = noteDoc.id;
-        return dataItem;
+export const retrieveNotesForUser = async (authToken, noteLimit) => {
+    const limit = noteLimit || 20;
+
+    const response = await fetch(`${API_URL}notes/?skip=0&limit=${limit}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+        },
     });
+    const data = await response.json();
     return data;
 };
 
-export const AddNoteForUser = async (userID, dataToAdd) => {
-    const newDocRef = collection(db, 'users', userID, 'notes');
-    const data = await addDoc(newDocRef, dataToAdd);
-    return data.id;
+export const AddNoteForUser = async (authToken, dataToAdd) => {
+    console.log(JSON.stringify(dataToAdd));
+    await fetch(`${API_URL}notes/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(dataToAdd),
+    });
 };
 
-export const UpdateNoteForUser = async (userID, docID, updateData) => {
-    const docRef = doc(db, 'users', userID, 'notes', docID);
-    await updateDoc(docRef, updateData);
+export const UpdateNoteForUser = async (authToken, noteUuid, updateData) => {
+    const apiUrl = process.env.EXPO_PUBLIC_API_BASE_URL;
+
+    const response = await fetch(`${apiUrl}notes/${noteUuid}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(updateData),
+    });
+    const data = await response.json();
+    return data;
 };
 
-export const DeleteNoteForUser = async (userID, docID) => {
-    const docRef = doc(db, 'users', userID, 'notes', docID);
-    await deleteDoc(docRef);
+export const DeleteNoteForUser = async (authToken, noteUuid) => {
+    console.log(authToken);
+    console.log(noteUuid);
 };
 
 /// GymLog

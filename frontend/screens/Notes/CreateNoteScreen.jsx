@@ -5,28 +5,28 @@ import {
     TextInput,
     Keyboard,
     KeyboardAvoidingView,
-    Platform,
 } from 'react-native';
 import React, { useState } from 'react';
 import { AddNoteForUser } from '../../services/collections';
-import { auth } from '../../firebase';
+import { useAuth } from '../../context/AuthContext';
 
 function CreateNoteScreen({ navigation }) {
-    const [newContent, setNewContent] = useState('');
+    const { authState } = useAuth();
+
+    const [newNoteBody, setNewNoteBody] = useState('');
     const [newTitle, setNewTitle] = useState('Title');
 
-    const handleAddNote = async (contentData, titleData) => {
+    const handleAddNote = async (newNoteData, newTitleData) => {
         const newNoteItem = {
-            content: contentData,
-            date: Date.now(),
-            title: titleData,
+            title: newTitleData,
+            body: newNoteData,
         };
-        AddNoteForUser(auth.currentUser.uid, newNoteItem);
+        AddNoteForUser(authState.token, newNoteItem);
         Keyboard.dismiss();
     };
 
     const onCreate = () => {
-        handleAddNote(newContent, newTitle);
+        handleAddNote(newNoteBody, newTitle);
         navigation.navigate('allNotes');
     };
 
@@ -49,8 +49,8 @@ function CreateNoteScreen({ navigation }) {
                     />
                     <TextInput
                         className="px-5 text-white text-lg h-1/2"
-                        value={newContent}
-                        onChangeText={(text) => setNewContent(text)}
+                        value={newNoteBody}
+                        onChangeText={(text) => setNewNoteBody(text)}
                         multiline
                         placeholder="Add notes here..."
                         placeholderTextColor="white"

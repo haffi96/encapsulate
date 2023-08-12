@@ -3,7 +3,6 @@ import {
     Keyboard, KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View,
     TouchableWithoutFeedback,
     FlatList,
-    Platform,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

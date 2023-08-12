@@ -1,11 +1,9 @@
 /* eslint-disable react/no-unstable-nested-components */
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-// eslint-disable-next-line import/no-unresolved
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { onAuthStateChanged } from 'firebase/auth';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import AllNotesScreen from './screens/Notes/AllNotesScreen';
@@ -17,7 +15,7 @@ import LogListScreen from './screens/GymLog/LogListScreen';
 import RoutinesScreen from './screens/GymLog/RoutinesScreen';
 import WorkoutScreen from './screens/GymLog/WorkOutScreen';
 import defaultScheme from './colors';
-import { auth } from './firebase';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 const Tab = createMaterialTopTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -128,18 +126,17 @@ function LoggedOutStack() {
 }
 
 export default function App() {
-    const [loggedIn, setLoggedIn] = useState(false);
+    return (
+        <AuthProvider>
+            <Layout>{ }</Layout>
+        </AuthProvider>
+    );
+}
 
-    useEffect(() => {
-        const checkAuth = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setLoggedIn(true);
-            }
-        });
-        return checkAuth;
-    }, []);
+export function Layout() {
+    const { authState } = useAuth();
 
-    if (loggedIn) {
+    if (authState.authenticated) {
         return (
             <NavigationContainer>
                 <Stack.Navigator>
