@@ -12,7 +12,7 @@ import NoteScreen from './screens/Notes/NoteScreen';
 import TodoScreen from './screens/TodoScreen';
 import GymLogScreen from './screens/GymLog/GymLogHomeScreen';
 import LogListScreen from './screens/GymLog/LogListScreen';
-import RoutinesScreen from './screens/GymLog/RoutinesScreen';
+import RoutinesScreen from './screens/GymLog/RoutinesListScreen';
 import WorkoutScreen from './screens/GymLog/WorkOutScreen';
 import defaultScheme from './colors';
 import { AuthProvider, useAuth } from './context/AuthContext';

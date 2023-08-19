@@ -8,20 +8,21 @@ import React, { useState, useEffect } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useIsFocused } from '@react-navigation/native';
 import Todo from '../components/Todo';
-import { auth } from '../firebase';
 import {
     retrieveTodosForUser, AddTodoForUser, DeleteTodoForUser, UpdateTodoForUser,
 } from '../services/collections';
+import { useAuth } from '../context/AuthContext';
 
 function TodoScreen() {
     const [todo, setTodo] = useState('');
     const [todoItems, setTodoItems] = useState([]);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const isFocused = useIsFocused();
+    const { authState } = useAuth();
 
     useEffect(() => {
         const getTodos = async () => {
-            const newTodos = await retrieveTodosForUser(auth.currentUser.uid);
+            const newTodos = await retrieveTodosForUser(authState.token);
             setTodoItems(newTodos);
         };
 
@@ -32,20 +33,17 @@ function TodoScreen() {
 
     const handleAddTodo = async () => {
         const newTodoItem = {
-            content: todo,
-            date: Date.now(),
-            completed: false,
-            reminder: null,
+            body: todo,
         };
-        const newDocID = await AddTodoForUser(auth.currentUser.uid, newTodoItem);
-        newTodoItem.id = newDocID;
+        const newTodoUuid = await AddTodoForUser(authState.token, newTodoItem);
+        newTodoItem.todo_uuid = newTodoUuid;
         setTodoItems([...todoItems, newTodoItem]);
         setTodo('');
         Keyboard.dismiss();
     };
 
-    const completeTodo = async (docID, index) => {
-        await UpdateTodoForUser(auth.currentUser.uid, docID, {
+    const completeTodo = async (todoUuid, index) => {
+        await UpdateTodoForUser(authState.token, todoUuid, {
             completed: !todoItems[index].completed,
         });
         const newTodoItems = [...todoItems];
@@ -54,25 +52,25 @@ function TodoScreen() {
         setTodoItems(newTodoItems);
     };
 
-    const deleteTodo = async (docID, index) => {
+    const deleteTodo = async (todoUuid, index) => {
         const itemsCopy = [...todoItems];
-        await DeleteTodoForUser(auth.currentUser.uid, docID);
+        await DeleteTodoForUser(authState.token, todoUuid);
         itemsCopy.splice(index, 1);
         setTodoItems(itemsCopy);
     };
 
     const renderTodoItem = ({ item, index }) => (
-        <View key={item.id}>
+        <View key={item.todo_uuid}>
             <Todo
                 todo={item}
-                completeAction={() => completeTodo(item.id, index)}
-                deleteAction={() => deleteTodo(item.id, index)}
+                completeAction={() => completeTodo(item.todo_uuid, index)}
+                deleteAction={() => deleteTodo(item.todo_uuid, index)}
             />
         </View>
     );
 
     const refreshTodoItems = async () => {
-        const newTodos = await retrieveTodosForUser(auth.currentUser.uid);
+        const newTodos = await retrieveTodosForUser(authState.token);
         setIsRefreshing(true);
         setTodoItems(newTodos);
         setIsRefreshing(false);
@@ -85,14 +83,14 @@ function TodoScreen() {
             }}
         >
             <KeyboardAvoidingView
-                className="flex bg-purple h-full"
+                className="flex bg-purple h-full space-y-10"
                 behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
-                <View className="flex p-5 h-2/3">
+                <View className="flex p-5 h-1/2">
                     <Text className="text-xl font-bold text-center pb-5">Todos</Text>
                     <FlatList
                         data={todoItems}
-                        keyExtractor={(item) => item.id}
+                        keyExtractor={(item) => item.todo_uuid}
                         renderItem={(item, index) => renderTodoItem(item, index)}
                         onRefresh={refreshTodoItems}
                         refreshing={isRefreshing}

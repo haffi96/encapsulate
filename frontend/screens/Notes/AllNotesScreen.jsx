@@ -68,7 +68,7 @@ function AllNotesScreen({ props, navigation }) {
                     refreshing={isRefreshing}
                 />
             </View>
-            <View className="flex bg-accent p-5 rounded-3xl w-1/2 absolute bottom-20 items-center">
+            <View className="flex bg-accent p-5 rounded-3xl w-1/2 absolute bottom-20 items-center border border-customBorderBottom">
                 <TouchableOpacity onPress={() => navigation.navigate('createNote')}>
                     <Text>New</Text>
                 </TouchableOpacity>
