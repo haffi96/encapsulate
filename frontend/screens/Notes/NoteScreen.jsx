@@ -5,30 +5,29 @@ import {
     View,
     Keyboard,
     KeyboardAvoidingView,
-    Platform,
 } from 'react-native';
 import React, { useState } from 'react';
-import { UpdateNoteForUser } from '../../services/collections';
-import { auth } from '../../firebase';
+import { UpdateNoteForUser } from '../../services/apiRequests';
+import { useAuth } from '../../context/AuthContext';
 
 function NoteScreen({ route, navigation }) {
+    const { authState } = useAuth();
     const { noteItem } = route.params;
 
-    const [contentCopy, setContentCopy] = useState(noteItem.content);
+    const [noteBodyCopy, setBodyCopy] = useState(noteItem.body);
     const [titleCopy, setTitleCopy] = useState(noteItem.title);
 
-    const updateNote = async (contentData, titleData) => {
-        const docID = noteItem.id;
-        noteItem.content = contentData;
+    const updateNote = async (noteBodyData, titleData) => {
+        noteItem.body = noteBodyData;
         noteItem.title = titleData;
-        UpdateNoteForUser(auth.currentUser.uid, docID, {
-            content: contentData,
+        UpdateNoteForUser(authState.token, noteItem.note_uuid, {
+            body: noteBodyData,
             title: titleData,
         });
     };
 
     const onSave = () => {
-        updateNote(contentCopy, titleCopy);
+        updateNote(noteBodyCopy, titleCopy);
         navigation.navigate('allNotes');
     };
 
@@ -51,8 +50,8 @@ function NoteScreen({ route, navigation }) {
                     />
                     <TextInput
                         className="px-5 text-white text-lg h-1/2"
-                        value={contentCopy}
-                        onChangeText={(text) => setContentCopy(text)}
+                        value={noteBodyCopy}
+                        onChangeText={(text) => setBodyCopy(text)}
                         multiline
                         autoFocus
                     />

@@ -4,25 +4,26 @@ import {
 import React, { useEffect, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import Exercise from '../../components/Exercise';
-import { retrieveSingleGymRoutine } from '../../services/collections';
-import { auth } from '../../firebase';
+import { retrieveExercisesBySlugs } from '../../services/apiRequests';
+import { useAuth } from '../../context/AuthContext';
 
 function WorkoutScreen({ props, route }) {
-    const { workOutItem } = route.params;
+    const { logEntryItem } = route.params;
 
-    const [routineItem, setRoutineItem] = useState([]);
+    const [exerciseItem, setExerciseItems] = useState([]);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const isFocused = useIsFocused();
+    const { authState } = useAuth();
 
     useEffect(() => {
-        const getRoutine = async () => {
+        const fetchExercises = async () => {
             const routine = await
-                retrieveSingleGymRoutine(auth.currentUser.uid, workOutItem.routineId);
-            setRoutineItem(routine);
+                retrieveExercisesBySlugs(authState.token, logEntryItem.routineId);
+            setExerciseItems(routine);
         };
 
         if (isFocused) {
-            getRoutine();
+            fetchExercises();
         }
     }, [props, isFocused]);
 
@@ -33,10 +34,9 @@ function WorkoutScreen({ props, route }) {
     );
 
     const refreshExercises = async () => {
-        const newRoutine = await
-            retrieveSingleGymRoutine(auth.currentUser.uid, workOutItem.routineId);
+        // const newRoutine = await
+        //     retrieveSingleGymRoutine(auth.currentUser.uid, workOutItem.routineId);
         setIsRefreshing(true);
-        setRoutineItem(newRoutine);
         setIsRefreshing(false);
     };
 
@@ -44,11 +44,11 @@ function WorkoutScreen({ props, route }) {
         <View className="flex h-full bg-purple">
             <View className="flex pt-10 px-5 h-full">
                 <Text className="text-lg font-bold text-center mb-5 text-white">
-                    {routineItem.routineName}
+                    {logEntryItem.routine}
                 </Text>
                 <FlatList
-                    data={routineItem.exercises}
-                    keyExtractor={(item) => item.exerciseId}
+                    data={exerciseItem}
+                    keyExtractor={(item) => item.exerciseUuid}
                     renderItem={(item, index) => renderExerciseItem(item, index)}
                     onRefresh={refreshExercises}
                     refreshing={isRefreshing}

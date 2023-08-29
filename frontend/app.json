@@ -16,19 +16,42 @@
         "assetBundlePatterns": [
             "**/*"
         ],
+        "plugins": [
+            "@react-native-google-signin/google-signin"
+        ],
         "ios": {
-            "supportsTablet": true
+            "supportsTablet": true,
+            "config": {
+                "usesNonExemptEncryption": false
+            },
+            "bundleIdentifier": "com.haff96.encapsulate",
+            "infoPlist": {
+                "CFBundleURLTypes": [
+                    {
+                        "CFBundleURLSchemes": [
+                            "com.googleusercontent.apps.833868032143-u1rq2g0uec5c4a5bcd6l5rgpirimn5h2"
+                        ]
+                    }
+                ]
+            }
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
                 "backgroundColor": "#FFFFFF"
             },
-            "softwareKeyboardLayoutMode": "pan"
+            "softwareKeyboardLayoutMode": "pan",
+            "package": "com.haff96.encapsulate"
         },
         "web": {
             "favicon": "./assets/favicon.png"
         },
-        "userInterfaceStyle": "automatic"
+        "userInterfaceStyle": "automatic",
+        "extra": {
+            "eas": {
+                "projectId": "bdfb508b-8152-408d-a9fe-50bb7c860908"
+            }
+        },
+        "owner": "haff96"
     }
 }

@@ -4,14 +4,9 @@ import {
 import React from 'react';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
 
-const convertToDate = (timeStamp) => {
-    const d = new Date(timeStamp);
-    return d.toDateString();
-};
-
-function WorkOut(props) {
+function Routine(props) {
     const {
-        routineName, date, deleteAction,
+        routineName, deleteAction,
     } = props;
 
     const renderAction = (progress, dragX) => {
@@ -31,7 +26,6 @@ function WorkOut(props) {
                 <View className="flex flex-col bg-accent p-5 rounded-3xl mb-5">
                     <View>
                         <Text className="font-bold">{routineName}</Text>
-                        <Text>{convertToDate(date)}</Text>
                     </View>
                 </View>
             </Swipeable>
@@ -39,4 +33,4 @@ function WorkOut(props) {
     );
 }
 
-export default WorkOut;
+export default Routine;

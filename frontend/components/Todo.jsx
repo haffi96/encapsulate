@@ -5,8 +5,8 @@ import React, { useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
-import { UpdateTodoForUser } from '../services/collections';
-import { auth } from '../firebase';
+import { UpdateTodoForUser } from '../services/apiRequests';
+import { useAuth } from '../context/AuthContext';
 
 function Todo(props) {
     const {
@@ -15,11 +15,12 @@ function Todo(props) {
 
     const [isExpanded, setIsExpanded] = useState(false);
     const toggleExpanded = () => setIsExpanded((value) => !value);
+    const { authState } = useAuth();
 
     const [reminderTime, setreminderTime] = useState(new Date(Date.now()));
 
     const onReminderTimeChange = async (_event, selectedDate) => {
-        await UpdateTodoForUser(auth.currentUser.uid, todo.id, {
+        await UpdateTodoForUser(authState.token, todo.todo_uuid, {
             reminder: reminderTime.getTime(),
         });
         setreminderTime(selectedDate);
@@ -76,7 +77,7 @@ function Todo(props) {
                                 <Text
                                     className={todo.completed ? 'italic line-through decoration-solid text-black' : ''}
                                 >
-                                    {todo.content}
+                                    {todo.body}
                                 </Text>
                             </View>
                             <TouchableOpacity onPress={deleteAction}>

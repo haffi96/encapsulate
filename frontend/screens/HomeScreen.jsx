@@ -2,20 +2,12 @@ import {
     Text, View, TouchableOpacity,
 } from 'react-native';
 import React from 'react';
-import { signOut } from 'firebase/auth';
-import { auth } from '../firebase';
+import { useAuth } from '../context/AuthContext';
 
 const buttonStyle = 'bg-accent w-full p-5 rounded-3xl items-center my-5';
 
 function HomeScreen({ navigation }) {
-    const handleSignOut = () => {
-        signOut(auth)
-            .then(() => {
-                navigation.navigate('LoginPage');
-            })
-            // eslint-disable-next-line no-alert
-            .catch((error) => alert(error.message));
-    };
+    const { onLogout } = useAuth();
 
     return (
         <View className="flex h-full justify-center items-center bg-purple">
@@ -39,7 +31,7 @@ function HomeScreen({ navigation }) {
                     <Text>Gym log</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={handleSignOut}
+                    onPress={onLogout}
                     className={buttonStyle}
                 >
                     <Text>Logout</Text>
