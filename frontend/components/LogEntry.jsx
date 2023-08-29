@@ -9,7 +9,7 @@ const convertToDate = (timeStamp) => {
     return d.toDateString();
 };
 
-function WorkOut(props) {
+function LogEntry(props) {
     const {
         routineName, date, deleteAction,
     } = props;
@@ -39,4 +39,4 @@ function WorkOut(props) {
     );
 }
 
-export default WorkOut;
+export default LogEntry;

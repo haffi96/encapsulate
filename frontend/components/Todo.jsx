@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { GestureHandlerRootView, Swipeable } from 'react-native-gesture-handler';
-import { UpdateTodoForUser } from '../services/collections';
+import { UpdateTodoForUser } from '../services/apiRequests';
 import { useAuth } from '../context/AuthContext';
 
 function Todo(props) {

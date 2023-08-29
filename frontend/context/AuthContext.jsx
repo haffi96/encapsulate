@@ -1,3 +1,4 @@
+import { Buffer } from 'buffer';
 import React, {
     createContext, useContext, useState, useEffect,
 } from 'react';
@@ -23,7 +24,8 @@ export function AuthProvider({ children }) {
             try {
                 const token = await SecureStore.getItemAsync(TOKEN_KEY);
                 const userUuid = await SecureStore.getItemAsync(USER_UUID_KEY);
-                if (token) {
+                const tokenPayload = JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString('ascii'));
+                if (token && tokenPayload.exp > Date.now() / 1000) {
                     setAuthState({ token, authenticated: true, userUuid });
                 }
             } catch (error) {
@@ -72,6 +74,26 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const googleLogin = async (email, idToken) => {
+        try {
+            const response = await fetch(`${apiUrl}auth/google`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, idToken }),
+            });
+            const data = await response.json();
+            if (data.access_token) {
+                await SecureStore.setItemAsync(TOKEN_KEY, data.access_token);
+                await SecureStore.setItemAsync(USER_UUID_KEY, data.user_uuid);
+                setAuthState(
+                    { token: data.access_token, authenticated: true, userUuid: data.user_uuid },
+                );
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const logout = async () => {
         try {
             await SecureStore.deleteItemAsync(TOKEN_KEY);
@@ -83,7 +105,11 @@ export function AuthProvider({ children }) {
     };
 
     const CachedValue = useMemo(() => ({
-        onRegister: register, onLogin: login, onLogout: logout, authState,
+        onRegister: register,
+        onLogin: login,
+        onGoogleLogin: googleLogin,
+        onLogout: logout,
+        authState,
     }), [authState]);
 
     return (

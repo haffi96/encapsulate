@@ -11,7 +11,7 @@ import CreateNoteScreen from './screens/Notes/CreateNoteScreen';
 import NoteScreen from './screens/Notes/NoteScreen';
 import TodoScreen from './screens/TodoScreen';
 import GymLogScreen from './screens/GymLog/GymLogHomeScreen';
-import LogListScreen from './screens/GymLog/LogListScreen';
+import LogEntryListScreen from './screens/GymLog/LogEntryListScreen';
 import RoutinesScreen from './screens/GymLog/RoutinesListScreen';
 import WorkoutScreen from './screens/GymLog/WorkOutScreen';
 import defaultScheme from './colors';
@@ -34,7 +34,7 @@ function GymLogStack() {
     return (
         <Stack.Navigator>
             <Stack.Screen options={{ headerShown: false }} name="GymLogs" component={GymLogScreen} />
-            <Stack.Screen options={{ headerShown: false }} name="LogList" component={LogListScreen} />
+            <Stack.Screen options={{ headerShown: false }} name="LogList" component={LogEntryListScreen} />
             <Stack.Screen options={{ headerShown: false }} name="Routines" component={RoutinesScreen} />
             <Stack.Screen options={{ headerShown: false }} name="Workout" component={WorkoutScreen} />
         </Stack.Navigator>

@@ -14,7 +14,11 @@ module.exports = {
                 customShadowDark: '#282A36',
                 customAccentSecondary: '#c39df9',
                 customBorderBottom: '#62669d',
+                googleSignIn: '#4285F4',
             },
+        },
+        fontFamily: {
+            roboto: ['Roboto', 'sans-serif'],
         },
     },
     plugins: ['nativewind/babel'],

@@ -6,7 +6,7 @@ import { useIsFocused } from '@react-navigation/native';
 import Note from '../../components/Note';
 import {
     retrieveNotesForUser, DeleteNoteForUser,
-} from '../../services/collections';
+} from '../../services/apiRequests';
 import { useAuth } from '../../context/AuthContext';
 
 function AllNotesScreen({ props, navigation }) {

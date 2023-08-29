@@ -3,18 +3,29 @@ import {
     KeyboardAvoidingView, Text, TextInput, TouchableOpacity, View,
     TouchableWithoutFeedback, Keyboard,
 } from 'react-native';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { useAuth } from '../context/AuthContext';
 
-function LoginScreen({ navigation }) {
+GoogleSignin.configure({
+    iosClientId: '833868032143-u1rq2g0uec5c4a5bcd6l5rgpirimn5h2.apps.googleusercontent.com',
+});
+
+function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const { onRegister, onLogin } = useAuth();
+    const { onRegister, onLogin, onGoogleLogin } = useAuth();
 
     const handleSignIn = async () => {
         const result = await onLogin(email, password);
         if (result && result.error) {
             alert(result.msg);
         }
+    };
+
+    const handleGoogleSignIn = async () => {
+        const userInfo = await GoogleSignin.signIn();
+        // Send req to backend and get access token
+        await onGoogleLogin(userInfo.user.email, userInfo.idToken);
     };
 
     const handleSignUp = async () => {
@@ -65,6 +76,22 @@ function LoginScreen({ navigation }) {
                     >
                         <Text>Register</Text>
                     </TouchableOpacity>
+
+                    <View className="items-center">
+                        <Text className="text-white">____________</Text>
+                        <Text />
+                        <TouchableOpacity
+                            onPress={handleGoogleSignIn}
+                            className="flex flex-row w-full p-2 bg-googleSignIn rounded-3xl space-x-2"
+                        >
+                            <View className="ml-5">
+                                <GoogleSigninButton
+                                    size={GoogleSigninButton.Size.Icon}
+                                />
+                            </View>
+                            <Text className="text-white m-auto font-roboto">Sign in with Google</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </KeyboardAvoidingView>
         </TouchableWithoutFeedback>

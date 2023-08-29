@@ -22,3 +22,8 @@ config.js
 docs/vault/.vscode
 
 .env
+
+ios
+android
+
+*.plist

@@ -4,7 +4,7 @@ import {
 import { useIsFocused } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { retrieveAllGymLogRoutinesForUser } from '../../services/collections';
+import { retrieveAllGymLogRoutinesForUser } from '../../services/apiRequests';
 import Routine from '../../components/Routine';
 
 function RoutinesScreen({ props, navigation }) {
@@ -16,7 +16,6 @@ function RoutinesScreen({ props, navigation }) {
     useEffect(() => {
         const getAllRoutines = async () => {
             const newRoutines = await retrieveAllGymLogRoutinesForUser(authState.token);
-            console.log(newRoutines);
             setRoutineItems(newRoutines);
         };
 

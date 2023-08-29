@@ -10,7 +10,7 @@ import { useIsFocused } from '@react-navigation/native';
 import Todo from '../components/Todo';
 import {
     retrieveTodosForUser, AddTodoForUser, DeleteTodoForUser, UpdateTodoForUser,
-} from '../services/collections';
+} from '../services/apiRequests';
 import { useAuth } from '../context/AuthContext';
 
 function TodoScreen() {

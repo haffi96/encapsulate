@@ -7,7 +7,7 @@ import {
     KeyboardAvoidingView,
 } from 'react-native';
 import React, { useState } from 'react';
-import { UpdateNoteForUser } from '../../services/collections';
+import { UpdateNoteForUser } from '../../services/apiRequests';
 import { useAuth } from '../../context/AuthContext';
 
 function NoteScreen({ route, navigation }) {
